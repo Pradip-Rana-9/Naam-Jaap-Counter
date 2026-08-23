@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <group
+        android:scaleX="0.38"
+        android:scaleY="0.38"
+        android:translateX="16"
+        android:translateY="16">
+
+        <!-- String / Thread connecting the beads -->
+        <path
+            android:pathData="M 100,35 A 50,50 0 1 1 99.9,35"
+            android:strokeWidth="3"
+            android:strokeColor="#1E88E5" />
+
+        <!-- Center 4-Pointed Sparkle Star (Diamond Flare) -->
+        <path
+            android:pathData="M 100,60 Q 100,85 118,85 Q 100,85 100,110 Q 100,85 82,85 Q 100,85 100,60 Z">
+            <aapt:attr name="android:fillColor">
+                <gradient
+                    android:startX="100"
+                    android:startY="60"
+                    android:endX="100"
+                    android:endY="110"
+                    android:type="linear">
+                    <item android:offset="0.0" android:color="#00E5FF" />
+                    <item android:offset="0.5" android:color="#2979FF" />
+                    <item android:offset="1.0" android:color="#A033FF" />
+                </gradient>
+            </aapt:attr>
+        </path>
+        <!-- Inner Sparkle Core Highlight -->
+        <path
+            android:pathData="M 100,72 Q 100,85 109,85 Q 100,85 100,98 Q 100,85 91,85 Q 100,85 100,72 Z"
+            android:fillColor="#80FFFFFF" />
+
+        <!-- BEADS AROUND THE MALA -->
+        
+        <!-- Bead 0 (Top Center) -->
+        <path android:pathData="M 100,35 m -9.5,0 a 9.5,9.5 0 1,0 19,0 a 9.5,9.5 0 1,0 -19,0" android:fillColor="#00E5FF" />
+        <path android:pathData="M 97,31 m -3,0 a 3,3 0 1,0 6,0 a 3,3 0 1,0 -6,0" android:fillColor="#80FFFFFF" />
+
+        <!-- Bead 1 (Top Right 1) -->
+        <path android:pathData="M 121.7,40 m -9.5,0 a 9.5,9.5 0 1,0 19,0 a 9.5,9.5 0 1,0 -19,0" android:fillColor="#00D5FF" />
+        <path android:pathData="M 118.7,36 m -3,0 a 3,3 0 1,0 6,0 a 3,3 0 1,0 -6,0" android:fillColor="#80FFFFFF" />
+
+        <!-- Bead 2 (Top Left 1) -->
+        <path android:pathData="M 78.3,40 m -9.5,0 a 9.5,9.5 0 1,0 19,0 a 9.5,9.5 0 1,0 -19,0" android:fillColor="#00D5FF" />
+        <path android:pathData="M 75.3,36 m -3,0 a 3,3 0 1,0 6,0 a 3,3 0 1,0 -6,0" android:fillColor="#80FFFFFF" />
+
+        <!-- Bead 3 (Right 2) -->
+        <path android:pathData="M 139.1,53.8 m -9.5,0 a 9.5,9.5 0 1,0 19,0 a 9.5,9.5 0 1,0 -19,0" android:fillColor="#00B0FF" />
+        <path android:pathData="M 136.1,49.8 m -3,0 a 3,3 0 1,0 6,0 a 3,3 0 1,0 -6,0" android:fillColor="#80FFFFFF" />
+
+        <!-- Bead 4 (Left 2) -->
+        <path android:pathData="M 60.9,53.8 m -9.5,0 a 9.5,9.5 0 1,0 19,0 a 9.5,9.5 0 1,0 -19,0" android:fillColor="#00B0FF" />
+        <path android:pathData="M 57.9,49.8 m -3,0 a 3,3 0 1,0 6,0 a 3,3 0 1,0 -6,0" android:fillColor="#80FFFFFF" />
+
+        <!-- Bead 5 (Right 3) -->
+        <path android:pathData="M 148.7,73.8 m -9.5,0 a 9.5,9.5 0 1,0 19,0 a 9.5,9.5 0 1,0 -19,0" android:fillColor="#1E88E5" />
+        <path android:pathData="M 145.7,69.8 m -3,0 a 3,3 0 1,0 6,0 a 3,3 0 1,0 -6,0" android:fillColor="#80FFFFFF" />
+
+        <!-- Bead 6 (Left 3) -->
+        <path android:pathData="M 51.3,73.8 m -9.5,0 a 9.5,9.5 0 1,0 19,0 a 9.5,9.5 0 1,0 -19,0" android:fillColor="#1E88E5" />
+        <path android:pathData="M 48.3,69.8 m -3,0 a 3,3 0 1,0 6,0 a 3,3 0 1,0 -6,0" android:fillColor="#80FFFFFF" />
+
+        <!-- Bead 7 (Right 4) -->
+        <path android:pathData="M 148.7,96.2 m -9.5,0 a 9.5,9.5 0 1,0 19,0 a 9.5,9.5 0 1,0 -19,0" android:fillColor="#2979FF" />
+        <path android:pathData="M 145.7,92.2 m -3,0 a 3,3 0 1,0 6,0 a 3,3 0 1,0 -6,0" android:fillColor="#80FFFFFF" />
+
+        <!-- Bead 8 (Left 4) -->
+        <path android:pathData="M 51.3,96.2 m -9.5,0 a 9.5,9.5 0 1,0 19,0 a 9.5,9.5 0 1,0 -19,0" android:fillColor="#2979FF" />
+        <path android:pathData="M 48.3,92.2 m -3,0 a 3,3 0 1,0 6,0 a 3,3 0 1,0 -6,0" android:fillColor="#80FFFFFF" />
+
+        <!-- Bead 9 (Right 5) -->
+        <path android:pathData="M 139.1,116.2 m -9.5,0 a 9.5,9.5 0 1,0 19,0 a 9.5,9.5 0 1,0 -19,0" android:fillColor="#3D5AFE" />
+        <path android:pathData="M 136.1,112.2 m -3,0 a 3,3 0 1,0 6,0 a 3,3 0 1,0 -6,0" android:fillColor="#80FFFFFF" />
+
+        <!-- Bead 10 (Left 5) -->
+        <path android:pathData="M 60.9,116.2 m -9.5,0 a 9.5,9.5 0 1,0 19,0 a 9.5,9.5 0 1,0 -19,0" android:fillColor="#3D5AFE" />
+        <path android:pathData="M 57.9,112.2 m -3,0 a 3,3 0 1,0 6,0 a 3,3 0 1,0 -6,0" android:fillColor="#80FFFFFF" />
+
+        <!-- Bead 11 (Bottom Right) -->
+        <path android:pathData="M 121.7,130 m -9.5,0 a 9.5,9.5 0 1,0 19,0 a 9.5,9.5 0 1,0 -19,0" android:fillColor="#651FFF" />
+        <path android:pathData="M 118.7,126 m -3,0 a 3,3 0 1,0 6,0 a 3,3 0 1,0 -6,0" android:fillColor="#80FFFFFF" />
+
+        <!-- Bead 12 (Bottom Left) -->
+        <path android:pathData="M 78.3,130 m -9.5,0 a 9.5,9.5 0 1,0 19,0 a 9.5,9.5 0 1,0 -19,0" android:fillColor="#651FFF" />
+        <path android:pathData="M 75.3,126 m -3,0 a 3,3 0 1,0 6,0 a 3,3 0 1,0 -6,0" android:fillColor="#80FFFFFF" />
+
+        <!-- GURU BEAD (Bottom Center) -->
+        <path android:pathData="M 100,136 m -11.5,0 a 11.5,11.5 0 1,0 23,0 a 11.5,11.5 0 1,0 -23,0" android:fillColor="#6200EA" />
+        <path android:pathData="M 96.5,131.5 m -3.5,0 a 3.5,3.5 0 1,0 7,0 a 3.5,3.5 0 1,0 -7,0" android:fillColor="#80FFFFFF" />
+
+        <!-- TASSEL CONNECTOR & CAP -->
+        <path android:pathData="M 100,150.5 m -4.5,0 a 4.5,4.5 0 1,0 9,0 a 4.5,4.5 0 1,0 -9,0" android:fillColor="#7C4DFF" />
+        <path android:pathData="M 92,156 C 92,154.5 108,154.5 108,156 L 107,160 C 107,161 93,161 93,160 Z" android:fillColor="#651FFF" />
+
+        <!-- TASSEL STRANDS -->
+        <path
+            android:pathData="M 94,160 C 92,168 85,178 80,186 C 84,186 91,178 95,160 Z"
+            android:fillColor="#651FFF" />
+        <path
+            android:pathData="M 96,160 C 95,170 91,180 88,188 C 92,188 97,178 98,160 Z"
+            android:fillColor="#7C4DFF" />
+        <path
+            android:pathData="M 98,160 C 99,172 100,180 100,190 C 101,180 101,172 102,160 Z"
+            android:fillColor="#6200EA" />
+        <path
+            android:pathData="M 102,160 C 103,178 108,188 112,188 C 109,180 105,170 104,160 Z"
+            android:fillColor="#7C4DFF" />
+        <path
+            android:pathData="M 105,160 C 109,178 116,186 120,186 C 115,178 108,168 106,160 Z"
+            android:fillColor="#651FFF" />
+
+    </group>
+
+</vector>

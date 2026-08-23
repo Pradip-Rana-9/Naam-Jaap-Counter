@@ -1,0 +1,6 @@
+{
+  "name": "Naam Jaap",
+  "description": "Track daily mantra chanting, streaks, daily goals, and milestone badges with a digital 108-bead mala.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Naam Jaap</string>
+    <string name="widget_name">Naam Jaap Counter</string>
+    <string name="widget_description">Perform sacred Naam Jaap directly from your home screen with real-time 108 bead progress.</string>
+</resources>

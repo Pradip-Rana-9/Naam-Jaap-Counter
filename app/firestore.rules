@@ -1,0 +1,45 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Default rule: deny all access to unidentified collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // User data document and all subcollections
+    match /users/{userId} {
+      // User can read, create, update, and delete only their own document
+      allow read, write: if isOwner(userId);
+
+      // Subcollection: Daily Progress logs
+      match /dailyProgress/{dateString} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // Subcollection: Chanting Sessions history
+      match /sessions/{sessionId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // Subcollection: Spiritual Sankalps (Vows)
+      match /sankalps/{sankalpId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // Any additional nested subcollections
+      match /{allSubcollections=**} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+  }
+}
