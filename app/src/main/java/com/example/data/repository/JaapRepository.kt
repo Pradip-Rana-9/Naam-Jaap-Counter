@@ -10,7 +10,6 @@ import com.example.data.entity.Sankalp
 import com.example.data.entity.Session
 import com.example.data.entity.UserSettings
 import com.example.data.firebase.FirebaseSyncManager
-import com.example.data.panchang.PanchangRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -32,10 +31,29 @@ class JaapRepository(
     private val appContext = context?.applicationContext
 
     val authRepository = AuthRepository(dao, context)
-    val panchangRepository = PanchangRepository()
     private val firebaseSyncManager = FirebaseSyncManager()
     private val countMutex = Mutex()
     private val backgroundScope = CoroutineScope(Dispatchers.IO)
+
+    private val prefs by lazy {
+        appContext?.getSharedPreferences("jaap_devotional_prefs", Context.MODE_PRIVATE)
+    }
+
+    fun getLastGuestReminderDismissedTime(): Long {
+        return try {
+            prefs?.getLong("key_last_guest_reminder_timestamp", 0L) ?: 0L
+        } catch (e: Exception) {
+            0L
+        }
+    }
+
+    fun setLastGuestReminderDismissedTime(timestamp: Long = System.currentTimeMillis()) {
+        try {
+            prefs?.edit()?.putLong("key_last_guest_reminder_timestamp", timestamp)?.apply()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
 
     private fun notifyWidgetUpdate() {
         appContext?.let { ctx ->

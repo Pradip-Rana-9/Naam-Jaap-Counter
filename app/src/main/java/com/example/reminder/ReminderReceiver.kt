@@ -31,25 +31,22 @@ class ReminderReceiver : BroadcastReceiver() {
             return
         }
 
-        val vratName = intent.getStringExtra("VRAT_NAME")
         val reminderType = intent.getStringExtra("REMINDER_TYPE") ?: "GENERAL"
         val hour = intent.getIntExtra("REMINDER_HOUR", -1)
         val minute = intent.getIntExtra("REMINDER_MINUTE", -1)
         val requestCode = intent.getIntExtra("REQUEST_CODE", 1001)
 
         val customTitle = intent.getStringExtra("NOTIFICATION_TITLE")
-            ?: when {
-                !vratName.isNullOrBlank() -> "🕉️ $vratName Vrat Reminder"
-                reminderType == "MORNING" -> "🌅 Morning Jaap Sadhana"
-                reminderType == "EVENING" -> "🌙 Evening Jaap Sadhana"
+            ?: when (reminderType) {
+                "MORNING" -> "🌅 Morning Jaap Sadhana"
+                "EVENING" -> "🌙 Evening Jaap Sadhana"
                 else -> "Daily Mantra Chanting 🧘"
             }
 
         val customBody = intent.getStringExtra("NOTIFICATION_BODY")
-            ?: when {
-                !vratName.isNullOrBlank() -> "Today is sacred $vratName. Remember to maintain sadhana and chant holy mantras."
-                reminderType == "MORNING" -> "Start your sacred day with divine chanting and inner peace. 🌸"
-                reminderType == "EVENING" -> "Complete your daily Malas and connect with the Supreme Divine. 🕉️"
+            ?: when (reminderType) {
+                "MORNING" -> "Start your sacred day with divine chanting and inner peace. 🌸"
+                "EVENING" -> "Complete your daily Malas and connect with the Supreme Divine. 🕉️"
                 else -> "Take a sacred moment to chant your daily Malas and connect with divinity! 🌸"
             }
 

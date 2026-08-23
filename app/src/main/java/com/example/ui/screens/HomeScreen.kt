@@ -32,7 +32,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.BarChart
-import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Edit
@@ -89,10 +88,7 @@ import com.example.ui.components.AvatarSelectionDialog
 import com.example.ui.components.DailyGitaWisdomCard
 import com.example.ui.components.DevoteeAuthDialog
 import com.example.ui.components.DevotionalNotificationDialog
-import com.example.ui.components.EkadashiCalendarSection
-import com.example.ui.components.FullEkadashiCalendarBottomSheet
 import com.example.ui.components.GuestModeReminderCard
-import com.example.ui.components.HomeUpcomingEventsSection
 import com.example.ui.components.ProfileEditDialog
 import com.example.ui.components.SankalpTrackerSection
 import com.example.ui.components.SpiritualAvatarGraphic
@@ -145,12 +141,10 @@ fun HomeScreen(
     val allMantras by viewModel.allMantras.collectAsState()
     val todaySessions by viewModel.todaySessions.collectAsState()
     val showGuestReminder by viewModel.showGuestReminder.collectAsState()
-    val panchangEvents by viewModel.upcomingPanchangEvents.collectAsState()
 
     var showProfileEditDialog by remember { mutableStateOf(false) }
     var showNotificationDialog by remember { mutableStateOf(false) }
     var showAuthDialog by remember { mutableStateOf(false) }
-    var showFullCalendarSheet by remember { mutableStateOf(false) }
 
     val rawUserName = userSettings?.userName
     val userName = if (!rawUserName.isNullOrBlank()) rawUserName else "Devotee"
@@ -207,26 +201,6 @@ fun HomeScreen(
         DevotionalNotificationDialog(
             viewModel = viewModel,
             onDismiss = { showNotificationDialog = false }
-        )
-    }
-
-    if (showFullCalendarSheet) {
-        FullEkadashiCalendarBottomSheet(
-            allEvents = panchangEvents,
-            language = userSettings?.language ?: "ENGLISH",
-            onDismiss = { showFullCalendarSheet = false },
-            onSelectMantraForJaap = { mantraText ->
-                val matchMantra = allMantras.firstOrNull { it.textEnglish.equals(mantraText, ignoreCase = true) || it.textHindi.equals(mantraText, ignoreCase = true) }
-                if (matchMantra != null) {
-                    viewModel.selectMantra(matchMantra.id)
-                } else {
-                    viewModel.addCustomMantra(mantraText)
-                }
-                onNavigateToJaap()
-            },
-            onSetDedicatedGoal = { goalMalas ->
-                viewModel.updateDailyGoal(goalMalas)
-            }
         )
     }
 
@@ -312,8 +286,12 @@ fun HomeScreen(
         }
 
         // GUEST MODE AWARENESS & DATA PROTECTION REMINDER
-        if (showGuestReminder) {
-            item(key = "guest_mode_reminder") {
+        item(key = "guest_mode_reminder") {
+            AnimatedVisibility(
+                visible = showGuestReminder,
+                enter = fadeIn() + expandVertically(),
+                exit = fadeOut() + shrinkVertically()
+            ) {
                 GuestModeReminderCard(
                     totalBeads = totalBeads,
                     totalMalas = totalMalas,
@@ -620,28 +598,7 @@ fun HomeScreen(
             }
         }
 
-        // 4. UPCOMING EVENTS & NEXT VRAT (Compact Dashboard: 1 Featured Vrat + 2-3 Event Carousel + View All)
-        item(key = "ekadashi_section") {
-            HomeUpcomingEventsSection(
-                allEvents = panchangEvents,
-                language = userSettings?.language ?: "ENGLISH",
-                onViewAll = { showFullCalendarSheet = true },
-                onSelectMantraForJaap = { mantraText ->
-                    val matchMantra = allMantras.firstOrNull { it.textEnglish.equals(mantraText, ignoreCase = true) || it.textHindi.equals(mantraText, ignoreCase = true) }
-                    if (matchMantra != null) {
-                        viewModel.selectMantra(matchMantra.id)
-                    } else {
-                        viewModel.addCustomMantra(mantraText)
-                    }
-                    onNavigateToJaap()
-                },
-                onSetDedicatedGoal = { goalMalas ->
-                    viewModel.updateDailyGoal(goalMalas)
-                }
-            )
-        }
-
-        // 5. QUICK ACTIONS GRID (4 Pill Buttons: Sankalp, Ekadashi, Achievements, History)
+        // 4. QUICK ACTIONS GRID (3 Pill Buttons: Sankalp, Badges, History)
         item(key = "quick_actions") {
             Column {
                 Text(
@@ -663,16 +620,8 @@ fun HomeScreen(
                         modifier = Modifier.weight(1f),
                         onClick = {
                             coroutineScope.launch {
-                                listState.animateScrollToItem(7)
+                                listState.animateScrollToItem(6)
                             }
-                        }
-                    )
-                    QuickActionButton(
-                        icon = Icons.Default.CalendarToday,
-                        label = "Ekadashi",
-                        modifier = Modifier.weight(1f),
-                        onClick = {
-                            showFullCalendarSheet = true
                         }
                     )
                     QuickActionButton(
@@ -681,7 +630,7 @@ fun HomeScreen(
                         modifier = Modifier.weight(1f),
                         onClick = {
                             coroutineScope.launch {
-                                listState.animateScrollToItem(8)
+                                listState.animateScrollToItem(7)
                             }
                         }
                     )
@@ -695,7 +644,7 @@ fun HomeScreen(
             }
         }
 
-        // 6. TODAY'S MANTRA CARD
+        // 5. TODAY'S MANTRA CARD
         item(key = "today_mantra") {
             Card(
                 modifier = Modifier.fillMaxWidth(),

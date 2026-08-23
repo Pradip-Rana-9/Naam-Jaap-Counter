@@ -28,7 +28,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.AutoAwesome
-import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Notifications
@@ -79,8 +78,6 @@ fun DevotionalNotificationDialog(
 ) {
     val context = LocalContext.current
     val userSettings by viewModel.userSettings.collectAsState()
-    val upcomingEvents by viewModel.upcomingPanchangEvents.collectAsState()
-    val nextEkadashi = upcomingEvents.firstOrNull { it.category == "EKADASHI" }
     val language = userSettings?.language ?: "ENGLISH"
     val isHindi = language == "HINDI"
 
@@ -189,7 +186,7 @@ fun DevotionalNotificationDialog(
                                 color = textColorPrimary
                             )
                             Text(
-                                text = if (isHindi) "दैनिक जाप व एकादशी स्मरण" else "Daily Sadhana & Vrat Alerts",
+                                text = if (isHindi) "दैनिक जाप व साधना स्मरण" else "Daily Sadhana & Chanting Alerts",
                                 fontSize = 12.sp,
                                 color = textColorSecondary
                             )
@@ -530,19 +527,11 @@ fun DevotionalNotificationDialog(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 NotificationFeedItem(
-                    icon = Icons.Default.CalendarMonth,
+                    icon = Icons.Default.NotificationsActive,
                     iconTint = Color(0xFF00E5FF),
-                    title = if (nextEkadashi != null) {
-                        if (isHindi) "${nextEkadashi.nameHindi} स्मरण" else "Upcoming ${nextEkadashi.nameEnglish}"
-                    } else {
-                        if (isHindi) "एकादशी व्रत स्मरण" else "Ekadashi Vrat Reminder"
-                    },
-                    description = if (nextEkadashi != null) {
-                        if (isHindi) "${nextEkadashi.dateString} को शुभ व्रत है। स्मरण सक्रिय है।" else "Sacred fast on ${nextEkadashi.dateString}. Fasting guidelines & parana alert active."
-                    } else {
-                        if (isHindi) "आगामी एकादशी के लिए व्रत स्मरण सक्रिय है।" else "Upcoming Ekadashi fast guidelines & devotional alert active."
-                    },
-                    timeTag = "Active"
+                    title = if (isHindi) "दैनिक जाप समय स्मरण" else "Daily Jaap Sadhana Alert",
+                    description = if (isHindi) "प्रतिदिन $formattedTime पर जाप का समय निर्धारित है।" else "Daily reminder active for $formattedTime chanting sadhana.",
+                    timeTag = "Daily"
                 )
 
                 Spacer(modifier = Modifier.height(6.dp))
@@ -551,8 +540,8 @@ fun DevotionalNotificationDialog(
                     icon = Icons.Default.SelfImprovement,
                     iconTint = Color(0xFFFF9800),
                     title = if (isHindi) "दैनिक साधना संकल्प" else "Daily Sadhana Goal",
-                    description = if (isHindi) "प्रतिदिन 10 माला का लक्ष्य निर्धारित है।" else "Daily target of malas tracked with audio & haptic chime.",
-                    timeTag = "Daily"
+                    description = if (isHindi) "प्रतिदिन माला का लक्ष्य निर्धारित है।" else "Daily target of malas tracked with audio & haptic chime.",
+                    timeTag = "Active"
                 )
 
                 Spacer(modifier = Modifier.height(18.dp))

@@ -719,23 +719,23 @@ fun CreateSankalpBottomSheet(
         "HINDI" -> listOf(
             "21-दिवसीय राधे राधे संकल्प",
             "40-दिवसीय हरे कृष्णा महामंत्र संकल्प",
-            "जन्माष्टमी विशेष महासंकल्प",
-            "कार्तिक मास महाव्रत",
-            "एकादशी विशेष जाप संकल्प"
+            "108-माला दैनिक साधना संकल्प",
+            "पुरुषोत्तम मास विशेष संकल्प",
+            "नित्य अखंड नाम जाप संकल्प"
         )
         "HINGLISH" -> listOf(
             "21-Day Radhe Radhe Sankalp",
             "40-Day Hare Krishna Sankalp",
-            "Janmashtami Special Sankalp",
-            "Kartik Month Mahavrat",
-            "Ekadashi Special Sankalp"
+            "108-Mala Daily Sadhana Sankalp",
+            "Purushottam Month Special Sankalp",
+            "Nitya Akhand Naam Jaap Sankalp"
         )
         else -> listOf(
             "21-Day Radhe Radhe Vow",
             "40-Day Hare Krishna Mahamantra Vow",
-            "Janmashtami Special Vow",
-            "Kartik Holy Month Vow",
-            "Ekadashi Special Jaap Vow"
+            "108-Mala Daily Sadhana Vow",
+            "Sacred Month Special Vow",
+            "Continuous Daily Naam Jaap Vow"
         )
     }
 

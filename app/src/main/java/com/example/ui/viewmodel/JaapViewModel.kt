@@ -20,7 +20,6 @@ import com.example.data.entity.Session
 import com.example.data.entity.UserSettings
 import com.example.data.repository.JaapRepository
 import com.example.reminder.ReminderManager
-import com.example.ui.components.DevotionalEvent
 import com.example.util.SoundHelper
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -47,8 +46,19 @@ class JaapViewModel(private val repository: JaapRepository) : ViewModel() {
 
     val authState: StateFlow<AuthState> = repository.authRepository.authState
 
+    private val GUEST_REMINDER_COOLDOWN_MS = 24 * 60 * 60 * 1000L // 24 hours
+
+    private fun isGuestReminderPeriodicEligible(): Boolean {
+        val lastDismissed = repository.getLastGuestReminderDismissedTime()
+        if (lastDismissed <= 0L) return true
+        val now = System.currentTimeMillis()
+        return (now - lastDismissed) >= GUEST_REMINDER_COOLDOWN_MS
+    }
+
     private val _isGuestReminderDismissed = MutableStateFlow(false)
     val isGuestReminderDismissed: StateFlow<Boolean> = _isGuestReminderDismissed.asStateFlow()
+
+    private val _guestReminderPeriodicEligible = MutableStateFlow(isGuestReminderPeriodicEligible())
 
     val isGuestUser: StateFlow<Boolean> = combine(authState, repository.userSettings) { state, settings ->
         if (state is AuthState.Authenticated) {
@@ -64,12 +74,16 @@ class JaapViewModel(private val repository: JaapRepository) : ViewModel() {
         initialValue = !repository.authRepository.isUserLoggedIn()
     )
 
-    val showGuestReminder: StateFlow<Boolean> = combine(isGuestUser, _isGuestReminderDismissed) { isGuest, dismissed ->
-        isGuest && !dismissed
+    val showGuestReminder: StateFlow<Boolean> = combine(
+        isGuestUser,
+        _isGuestReminderDismissed,
+        _guestReminderPeriodicEligible
+    ) { isGuest, dismissed, periodicEligible ->
+        isGuest && !dismissed && periodicEligible
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = !repository.authRepository.isUserLoggedIn()
+        initialValue = !repository.authRepository.isUserLoggedIn() && isGuestReminderPeriodicEligible()
     )
 
     fun isGuestMode(): Boolean {
@@ -78,10 +92,13 @@ class JaapViewModel(private val repository: JaapRepository) : ViewModel() {
 
     fun dismissGuestReminder() {
         _isGuestReminderDismissed.value = true
+        _guestReminderPeriodicEligible.value = false
+        repository.setLastGuestReminderDismissedTime(System.currentTimeMillis())
     }
 
     fun resetGuestReminder() {
         _isGuestReminderDismissed.value = false
+        _guestReminderPeriodicEligible.value = isGuestReminderPeriodicEligible()
     }
 
     private val _currentTab = MutableStateFlow(0) // 0: Home, 1: Jaap, 2: Progress, 3: Profile
@@ -159,9 +176,6 @@ class JaapViewModel(private val repository: JaapRepository) : ViewModel() {
         initialValue = 0
     )
 
-    private val _upcomingPanchangEvents = MutableStateFlow<List<DevotionalEvent>>(emptyList())
-    val upcomingPanchangEvents: StateFlow<List<DevotionalEvent>> = _upcomingPanchangEvents.asStateFlow()
-
     private val _streaks = MutableStateFlow(Pair(0, 0)) // Current Streak, Longest Streak
     val streaks: StateFlow<Pair<Int, Int>> = _streaks.asStateFlow()
 
@@ -178,12 +192,7 @@ class JaapViewModel(private val repository: JaapRepository) : ViewModel() {
         viewModelScope.launch {
             repository.ensureInitialData()
             refreshStreaks()
-            refreshPanchangEvents()
         }
-    }
-
-    fun refreshPanchangEvents() {
-        _upcomingPanchangEvents.value = repository.panchangRepository.getUpcomingEvents()
     }
 
     fun setTab(tabIndex: Int) {

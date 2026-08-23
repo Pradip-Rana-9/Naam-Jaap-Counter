@@ -169,56 +169,18 @@ object ReminderManager {
         context.sendBroadcast(intent)
     }
 
-    fun scheduleVratReminder(context: Context, eventId: Int, eventName: String, targetTimestamp: Long) {
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(context, ReminderReceiver::class.java).apply {
-            action = "com.example.reminder.ACTION_JAAP_VRAT"
-            putExtra("VRAT_NAME", eventName)
-            putExtra("REQUEST_CODE", 2000 + eventId)
-        }
-        val pendingIntent = PendingIntent.getBroadcast(
-            context,
-            2000 + eventId,
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
-
-        val triggerTime = if (targetTimestamp > System.currentTimeMillis()) {
-            targetTimestamp
-        } else {
-            System.currentTimeMillis() + 5000
-        }
-
+    fun cancelAllLegacyVratReminders(context: Context) {
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && alarmManager.canScheduleExactAlarms()) {
-                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
-                } else {
-                    alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
-                }
-            } else {
-                alarmManager.set(
-                    AlarmManager.RTC_WAKEUP,
-                    triggerTime,
-                    pendingIntent
-                )
-            }
-        } catch (e: SecurityException) {
-            try {
-                alarmManager.set(
-                    AlarmManager.RTC_WAKEUP,
-                    triggerTime,
-                    pendingIntent
-                )
-            } catch (ex: Exception) {
-                ex.printStackTrace()
+            for (eventId in 0..100) {
+                cancelReminder(context, 2000 + eventId)
             }
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.w("ReminderManager", "Error clearing legacy vrat reminders: ${e.message}")
         }
     }
 
     fun rescheduleIfEnabled(context: Context) {
+        cancelAllLegacyVratReminders(context)
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val db = AppDatabase.getDatabase(context)
