@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aapt="http://schemas.android.com/aapt"
     android:width="200dp"
@@ -6,112 +5,442 @@
     android:viewportWidth="200"
     android:viewportHeight="200">
 
-    <!-- String / Thread connecting the beads -->
+    <!-- ======================================================= -->
+    <!-- 1. SOFT AMBIENT RADIAL GLOW (TRANSPARENT BACKGROUND)   -->
+    <!-- Glow seamlessly illuminates behind the 26 Mala beads    -->
+    <!-- ======================================================= -->
     <path
-        android:pathData="M 100,35 A 50,50 0 1 1 99.9,35"
-        android:strokeWidth="3"
-        android:strokeColor="#1E88E5" />
-
-    <!-- Center 4-Pointed Sparkle Star (Diamond Flare) -->
-    <path
-        android:pathData="M 100,60 Q 100,85 118,85 Q 100,85 100,110 Q 100,85 82,85 Q 100,85 100,60 Z">
-        <aapt:attr name="android:fillColor">
+        android:pathData="M 100,100 m -64,0 a 64,64 0 1,0 128,0 a 64,64 0 1,0 -128,0"
+        android:strokeWidth="16"
+        android:strokeAlpha="0.22">
+        <aapt:attr name="android:strokeColor">
             <gradient
                 android:startX="100"
-                android:startY="60"
+                android:startY="36"
                 android:endX="100"
-                android:endY="110"
+                android:endY="164"
                 android:type="linear">
-                <item android:offset="0.0" android:color="#00E5FF" />
-                <item android:offset="0.5" android:color="#2979FF" />
-                <item android:offset="1.0" android:color="#A033FF" />
+                <item android:offset="0.0" android:color="#00EEFF" />
+                <item android:offset="0.3" android:color="#0088FF" />
+                <item android:offset="0.6" android:color="#2F4BFF" />
+                <item android:offset="0.85" android:color="#7C1EFF" />
+                <item android:offset="1.0" android:color="#AC14FF" />
             </gradient>
         </aapt:attr>
     </path>
-    <!-- Inner Sparkle Core Highlight -->
+
+    <!-- Mala Subtle Connecting Cord -->
     <path
-        android:pathData="M 100,72 Q 100,85 109,85 Q 100,85 100,98 Q 100,85 91,85 Q 100,85 100,72 Z"
-        android:fillColor="#80FFFFFF" />
+        android:pathData="M 100,36 A 64,64 0 1 1 99.9,36"
+        android:strokeWidth="2.2"
+        android:strokeColor="#0B1226" />
 
-    <!-- BEADS AROUND THE MALA (13 Regular Beads + 1 Guru Bead at Bottom) -->
-    
-    <!-- Bead 0 (Top Center) -->
-    <path android:pathData="M 100,35 m -9.5,0 a 9.5,9.5 0 1,0 19,0 a 9.5,9.5 0 1,0 -19,0" android:fillColor="#00E5FF" />
-    <path android:pathData="M 97,31 m -3,0 a 3,3 0 1,0 6,0 a 3,3 0 1,0 -6,0" android:fillColor="#80FFFFFF" />
+    <!-- ======================================================= -->
+    <!-- 2. EXACT 26 3D SPHERICAL GRADIENT MALA BEADS + SPACERS -->
+    <!-- Shifting from Neon Cyan (Top) to Blue to Deep Purple (Bottom) -->
+    <!-- ======================================================= -->
 
-    <!-- Bead 1 (Top Right 1) -->
-    <path android:pathData="M 121.7,40 m -9.5,0 a 9.5,9.5 0 1,0 19,0 a 9.5,9.5 0 1,0 -19,0" android:fillColor="#00D5FF" />
-    <path android:pathData="M 118.7,36 m -3,0 a 3,3 0 1,0 6,0 a 3,3 0 1,0 -6,0" android:fillColor="#80FFFFFF" />
+    <!-- Bead 0 (Top Center, 12 o'clock) - Neon Cyan -->
+    <!-- Shadow -->
+    <path android:pathData="M 100.0,36.0 m -6.4,0 a 6.4,6.4 0 1,0 12.8,0 a 6.4,6.4 0 1,0 -12.8,0" android:fillColor="#33000000" />
+    <!-- Bead body -->
+    <path android:pathData="M 100.0,36.0 m -5.8,0 a 5.8,5.8 0 1,0 11.6,0 a 5.8,5.8 0 1,0 -11.6,0">
+        <aapt:attr name="android:fillColor">
+            <gradient android:startX="97.5" android:startY="33.5" android:endX="102.5" android:endY="38.5" android:type="radial" android:gradientRadius="6.0">
+                <item android:offset="0.0" android:color="#80F7FF" />
+                <item android:offset="0.6" android:color="#00D8FF" />
+                <item android:offset="1.0" android:color="#009ECB" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <!-- Specular Highlight -->
+    <path android:pathData="M 98.2,34.2 m -1.8,0 a 1.8,1.8 0 1,0 3.6,0 a 1.8,1.8 0 1,0 -3.6,0" android:fillColor="#E6FFFFFF" />
+    <!-- Spacer 0 -->
+    <path android:pathData="M 107.7,36.5 m -1.3,0 a 1.3,1.3 0 1,0 2.6,0 a 1.3,1.3 0 1,0 -2.6,0" android:fillColor="#00D2FF" />
 
-    <!-- Bead 2 (Top Left 1) -->
-    <path android:pathData="M 78.3,40 m -9.5,0 a 9.5,9.5 0 1,0 19,0 a 9.5,9.5 0 1,0 -19,0" android:fillColor="#00D5FF" />
-    <path android:pathData="M 75.3,36 m -3,0 a 3,3 0 1,0 6,0 a 3,3 0 1,0 -6,0" android:fillColor="#80FFFFFF" />
+    <!-- Bead 1 - Bright Cyan -->
+    <path android:pathData="M 115.3,37.9 m -5.8,0 a 5.8,5.8 0 1,0 11.6,0 a 5.8,5.8 0 1,0 -11.6,0">
+        <aapt:attr name="android:fillColor">
+            <gradient android:startX="113.0" android:startY="35.5" android:endX="118.0" android:endY="40.5" android:type="radial" android:gradientRadius="6.0">
+                <item android:offset="0.0" android:color="#73F4FF" />
+                <item android:offset="0.6" android:color="#00CEFF" />
+                <item android:offset="1.0" android:color="#0093C2" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M 113.5,36.1 m -1.8,0 a 1.8,1.8 0 1,0 3.6,0 a 1.8,1.8 0 1,0 -3.6,0" android:fillColor="#E6FFFFFF" />
+    <path android:pathData="M 122.7,40.2 m -1.3,0 a 1.3,1.3 0 1,0 2.6,0 a 1.3,1.3 0 1,0 -2.6,0" android:fillColor="#00C4FF" />
 
-    <!-- Bead 3 (Right 2) -->
-    <path android:pathData="M 139.1,53.8 m -9.5,0 a 9.5,9.5 0 1,0 19,0 a 9.5,9.5 0 1,0 -19,0" android:fillColor="#00B0FF" />
-    <path android:pathData="M 136.1,49.8 m -3,0 a 3,3 0 1,0 6,0 a 3,3 0 1,0 -6,0" android:fillColor="#80FFFFFF" />
+    <!-- Bead 2 - Vivid Sky Cyan -->
+    <path android:pathData="M 129.7,43.3 m -5.8,0 a 5.8,5.8 0 1,0 11.6,0 a 5.8,5.8 0 1,0 -11.6,0">
+        <aapt:attr name="android:fillColor">
+            <gradient android:startX="127.4" android:startY="41.0" android:endX="132.4" android:endY="46.0" android:type="radial" android:gradientRadius="6.0">
+                <item android:offset="0.0" android:color="#5EEFFF" />
+                <item android:offset="0.6" android:color="#00B8FF" />
+                <item android:offset="1.0" android:color="#0082BD" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M 127.9,41.5 m -1.8,0 a 1.8,1.8 0 1,0 3.6,0 a 1.8,1.8 0 1,0 -3.6,0" android:fillColor="#E6FFFFFF" />
+    <path android:pathData="M 136.4,47.3 m -1.3,0 a 1.3,1.3 0 1,0 2.6,0 a 1.3,1.3 0 1,0 -2.6,0" android:fillColor="#00A8FF" />
 
-    <!-- Bead 4 (Left 2) -->
-    <path android:pathData="M 60.9,53.8 m -9.5,0 a 9.5,9.5 0 1,0 19,0 a 9.5,9.5 0 1,0 -19,0" android:fillColor="#00B0FF" />
-    <path android:pathData="M 57.9,49.8 m -3,0 a 3,3 0 1,0 6,0 a 3,3 0 1,0 -6,0" android:fillColor="#80FFFFFF" />
+    <!-- Bead 3 - Sky Blue -->
+    <path android:pathData="M 142.4,52.1 m -5.8,0 a 5.8,5.8 0 1,0 11.6,0 a 5.8,5.8 0 1,0 -11.6,0">
+        <aapt:attr name="android:fillColor">
+            <gradient android:startX="140.1" android:startY="49.8" android:endX="145.1" android:endY="54.8" android:type="radial" android:gradientRadius="6.0">
+                <item android:offset="0.0" android:color="#4AD6FF" />
+                <item android:offset="0.6" android:color="#009AFF" />
+                <item android:offset="1.0" android:color="#006BB8" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M 140.6,50.3 m -1.8,0 a 1.8,1.8 0 1,0 3.6,0 a 1.8,1.8 0 1,0 -3.6,0" android:fillColor="#E6FFFFFF" />
+    <path android:pathData="M 147.9,57.6 m -1.3,0 a 1.3,1.3 0 1,0 2.6,0 a 1.3,1.3 0 1,0 -2.6,0" android:fillColor="#0088FF" />
 
-    <!-- Bead 5 (Right 3) -->
-    <path android:pathData="M 148.7,73.8 m -9.5,0 a 9.5,9.5 0 1,0 19,0 a 9.5,9.5 0 1,0 -19,0" android:fillColor="#1E88E5" />
-    <path android:pathData="M 145.7,69.8 m -3,0 a 3,3 0 1,0 6,0 a 3,3 0 1,0 -6,0" android:fillColor="#80FFFFFF" />
+    <!-- Bead 4 - Electric Azure -->
+    <path android:pathData="M 152.7,63.6 m -5.8,0 a 5.8,5.8 0 1,0 11.6,0 a 5.8,5.8 0 1,0 -11.6,0">
+        <aapt:attr name="android:fillColor">
+            <gradient android:startX="150.4" android:startY="61.3" android:endX="155.4" android:endY="66.3" android:type="radial" android:gradientRadius="6.0">
+                <item android:offset="0.0" android:color="#36B8FF" />
+                <item android:offset="0.6" android:color="#007CFF" />
+                <item android:offset="1.0" android:color="#0053BD" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M 150.9,61.8 m -1.8,0 a 1.8,1.8 0 1,0 3.6,0 a 1.8,1.8 0 1,0 -3.6,0" android:fillColor="#E6FFFFFF" />
+    <path android:pathData="M 156.7,70.3 m -1.3,0 a 1.3,1.3 0 1,0 2.6,0 a 1.3,1.3 0 1,0 -2.6,0" android:fillColor="#086EFF" />
 
-    <!-- Bead 6 (Left 3) -->
-    <path android:pathData="M 51.3,73.8 m -9.5,0 a 9.5,9.5 0 1,0 19,0 a 9.5,9.5 0 1,0 -19,0" android:fillColor="#1E88E5" />
-    <path android:pathData="M 48.3,69.8 m -3,0 a 3,3 0 1,0 6,0 a 3,3 0 1,0 -6,0" android:fillColor="#80FFFFFF" />
+    <!-- Bead 5 - Deep Azure Blue -->
+    <path android:pathData="M 159.8,77.3 m -5.8,0 a 5.8,5.8 0 1,0 11.6,0 a 5.8,5.8 0 1,0 -11.6,0">
+        <aapt:attr name="android:fillColor">
+            <gradient android:startX="157.5" android:startY="75.0" android:endX="162.5" android:endY="80.0" android:type="radial" android:gradientRadius="6.0">
+                <item android:offset="0.0" android:color="#3B9EFF" />
+                <item android:offset="0.6" android:color="#0F5FFF" />
+                <item android:offset="1.0" android:color="#083EB5" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M 158.0,75.5 m -1.8,0 a 1.8,1.8 0 1,0 3.6,0 a 1.8,1.8 0 1,0 -3.6,0" android:fillColor="#E6FFFFFF" />
+    <path android:pathData="M 162.1,84.7 m -1.3,0 a 1.3,1.3 0 1,0 2.6,0 a 1.3,1.3 0 1,0 -2.6,0" android:fillColor="#154FFF" />
 
-    <!-- Bead 7 (Right 4) -->
-    <path android:pathData="M 148.7,96.2 m -9.5,0 a 9.5,9.5 0 1,0 19,0 a 9.5,9.5 0 1,0 -19,0" android:fillColor="#2979FF" />
-    <path android:pathData="M 145.7,92.2 m -3,0 a 3,3 0 1,0 6,0 a 3,3 0 1,0 -6,0" android:fillColor="#80FFFFFF" />
+    <!-- Bead 6 - Cobalt Blue -->
+    <path android:pathData="M 163.5,92.3 m -5.8,0 a 5.8,5.8 0 1,0 11.6,0 a 5.8,5.8 0 1,0 -11.6,0">
+        <aapt:attr name="android:fillColor">
+            <gradient android:startX="161.2" android:startY="90.0" android:endX="166.2" android:endY="95.0" android:type="radial" android:gradientRadius="6.0">
+                <item android:offset="0.0" android:color="#4F85FF" />
+                <item android:offset="0.6" android:color="#1A47FF" />
+                <item android:offset="1.0" android:color="#0E2BBA" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M 161.7,90.5 m -1.8,0 a 1.8,1.8 0 1,0 3.6,0 a 1.8,1.8 0 1,0 -3.6,0" android:fillColor="#E6FFFFFF" />
+    <path android:pathData="M 164.0,100.0 m -1.3,0 a 1.3,1.3 0 1,0 2.6,0 a 1.3,1.3 0 1,0 -2.6,0" android:fillColor="#223BFF" />
 
-    <!-- Bead 8 (Left 4) -->
-    <path android:pathData="M 51.3,96.2 m -9.5,0 a 9.5,9.5 0 1,0 19,0 a 9.5,9.5 0 1,0 -19,0" android:fillColor="#2979FF" />
-    <path android:pathData="M 48.3,92.2 m -3,0 a 3,3 0 1,0 6,0 a 3,3 0 1,0 -6,0" android:fillColor="#80FFFFFF" />
+    <!-- Bead 7 - Royal Ultramarine Blue -->
+    <path android:pathData="M 163.5,107.7 m -5.8,0 a 5.8,5.8 0 1,0 11.6,0 a 5.8,5.8 0 1,0 -11.6,0">
+        <aapt:attr name="android:fillColor">
+            <gradient android:startX="161.2" android:startY="105.4" android:endX="166.2" android:endY="110.4" android:type="radial" android:gradientRadius="6.0">
+                <item android:offset="0.0" android:color="#6270FF" />
+                <item android:offset="0.6" android:color="#2832FF" />
+                <item android:offset="1.0" android:color="#151CBD" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M 161.7,105.9 m -1.8,0 a 1.8,1.8 0 1,0 3.6,0 a 1.8,1.8 0 1,0 -3.6,0" android:fillColor="#E6FFFFFF" />
+    <path android:pathData="M 162.1,115.3 m -1.3,0 a 1.3,1.3 0 1,0 2.6,0 a 1.3,1.3 0 1,0 -2.6,0" android:fillColor="#3A28FF" />
 
-    <!-- Bead 9 (Right 5) -->
-    <path android:pathData="M 139.1,116.2 m -9.5,0 a 9.5,9.5 0 1,0 19,0 a 9.5,9.5 0 1,0 -19,0" android:fillColor="#3D5AFE" />
-    <path android:pathData="M 136.1,112.2 m -3,0 a 3,3 0 1,0 6,0 a 3,3 0 1,0 -6,0" android:fillColor="#80FFFFFF" />
+    <!-- Bead 8 - Indigo Blue -->
+    <path android:pathData="M 159.8,122.7 m -5.8,0 a 5.8,5.8 0 1,0 11.6,0 a 5.8,5.8 0 1,0 -11.6,0">
+        <aapt:attr name="android:fillColor">
+            <gradient android:startX="157.5" android:startY="120.4" android:endX="162.5" android:endY="125.4" android:type="radial" android:gradientRadius="6.0">
+                <item android:offset="0.0" android:color="#785BFF" />
+                <item android:offset="0.6" android:color="#421EFF" />
+                <item android:offset="1.0" android:color="#250EB8" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M 158.0,120.9 m -1.8,0 a 1.8,1.8 0 1,0 3.6,0 a 1.8,1.8 0 1,0 -3.6,0" android:fillColor="#E6FFFFFF" />
+    <path android:pathData="M 156.7,129.7 m -1.3,0 a 1.3,1.3 0 1,0 2.6,0 a 1.3,1.3 0 1,0 -2.6,0" android:fillColor="#5218FF" />
 
-    <!-- Bead 10 (Left 5) -->
-    <path android:pathData="M 60.9,116.2 m -9.5,0 a 9.5,9.5 0 1,0 19,0 a 9.5,9.5 0 1,0 -19,0" android:fillColor="#3D5AFE" />
-    <path android:pathData="M 57.9,112.2 m -3,0 a 3,3 0 1,0 6,0 a 3,3 0 1,0 -6,0" android:fillColor="#80FFFFFF" />
+    <!-- Bead 9 - Deep Indigo Violet -->
+    <path android:pathData="M 152.7,136.4 m -5.8,0 a 5.8,5.8 0 1,0 11.6,0 a 5.8,5.8 0 1,0 -11.6,0">
+        <aapt:attr name="android:fillColor">
+            <gradient android:startX="150.4" android:startY="134.1" android:endX="155.4" android:endY="139.1" android:type="radial" android:gradientRadius="6.0">
+                <item android:offset="0.0" android:color="#904BFF" />
+                <item android:offset="0.6" android:color="#5F10FF" />
+                <item android:offset="1.0" android:color="#3C07BD" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M 150.9,134.6 m -1.8,0 a 1.8,1.8 0 1,0 3.6,0 a 1.8,1.8 0 1,0 -3.6,0" android:fillColor="#E6FFFFFF" />
+    <path android:pathData="M 147.9,142.4 m -1.3,0 a 1.3,1.3 0 1,0 2.6,0 a 1.3,1.3 0 1,0 -2.6,0" android:fillColor="#6E0DFF" />
 
-    <!-- Bead 11 (Bottom Right) -->
-    <path android:pathData="M 121.7,130 m -9.5,0 a 9.5,9.5 0 1,0 19,0 a 9.5,9.5 0 1,0 -19,0" android:fillColor="#651FFF" />
-    <path android:pathData="M 118.7,126 m -3,0 a 3,3 0 1,0 6,0 a 3,3 0 1,0 -6,0" android:fillColor="#80FFFFFF" />
+    <!-- Bead 10 - Violet -->
+    <path android:pathData="M 142.4,147.9 m -5.8,0 a 5.8,5.8 0 1,0 11.6,0 a 5.8,5.8 0 1,0 -11.6,0">
+        <aapt:attr name="android:fillColor">
+            <gradient android:startX="140.1" android:startY="145.6" android:endX="145.1" android:endY="150.6" android:type="radial" android:gradientRadius="6.0">
+                <item android:offset="0.0" android:color="#A73DFF" />
+                <item android:offset="0.6" android:color="#7C08FF" />
+                <item android:offset="1.0" android:color="#5104BE" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M 140.6,146.1 m -1.8,0 a 1.8,1.8 0 1,0 3.6,0 a 1.8,1.8 0 1,0 -3.6,0" android:fillColor="#E6FFFFFF" />
+    <path android:pathData="M 136.4,152.7 m -1.3,0 a 1.3,1.3 0 1,0 2.6,0 a 1.3,1.3 0 1,0 -2.6,0" android:fillColor="#8C05FF" />
 
-    <!-- Bead 12 (Bottom Left) -->
-    <path android:pathData="M 78.3,130 m -9.5,0 a 9.5,9.5 0 1,0 19,0 a 9.5,9.5 0 1,0 -19,0" android:fillColor="#651FFF" />
-    <path android:pathData="M 75.3,126 m -3,0 a 3,3 0 1,0 6,0 a 3,3 0 1,0 -6,0" android:fillColor="#80FFFFFF" />
+    <!-- Bead 11 - Deep Purple -->
+    <path android:pathData="M 129.7,156.7 m -5.8,0 a 5.8,5.8 0 1,0 11.6,0 a 5.8,5.8 0 1,0 -11.6,0">
+        <aapt:attr name="android:fillColor">
+            <gradient android:startX="127.4" android:startY="154.4" android:endX="132.4" android:endY="159.4" android:type="radial" android:gradientRadius="6.0">
+                <item android:offset="0.0" android:color="#BD33FF" />
+                <item android:offset="0.6" android:color="#9705FF" />
+                <item android:offset="1.0" android:color="#6702BD" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M 127.9,154.9 m -1.8,0 a 1.8,1.8 0 1,0 3.6,0 a 1.8,1.8 0 1,0 -3.6,0" android:fillColor="#E6FFFFFF" />
+    <path android:pathData="M 122.7,159.8 m -1.3,0 a 1.3,1.3 0 1,0 2.6,0 a 1.3,1.3 0 1,0 -2.6,0" android:fillColor="#A204FF" />
 
-    <!-- GURU BEAD (Bottom Center - Larger Bead) -->
-    <path android:pathData="M 100,136 m -11.5,0 a 11.5,11.5 0 1,0 23,0 a 11.5,11.5 0 1,0 -23,0" android:fillColor="#6200EA" />
-    <path android:pathData="M 96.5,131.5 m -3.5,0 a 3.5,3.5 0 1,0 7,0 a 3.5,3.5 0 1,0 -7,0" android:fillColor="#80FFFFFF" />
+    <!-- Bead 12 - Vivid Purple Magenta -->
+    <path android:pathData="M 115.3,162.1 m -5.8,0 a 5.8,5.8 0 1,0 11.6,0 a 5.8,5.8 0 1,0 -11.6,0">
+        <aapt:attr name="android:fillColor">
+            <gradient android:startX="113.0" android:startY="159.8" android:endX="118.0" android:endY="164.8" android:type="radial" android:gradientRadius="6.0">
+                <item android:offset="0.0" android:color="#CB2CFF" />
+                <item android:offset="0.6" android:color="#A905FF" />
+                <item android:offset="1.0" android:color="#7702C2" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M 113.5,160.3 m -1.8,0 a 1.8,1.8 0 1,0 3.6,0 a 1.8,1.8 0 1,0 -3.6,0" android:fillColor="#E6FFFFFF" />
+    <path android:pathData="M 107.7,163.5 m -1.3,0 a 1.3,1.3 0 1,0 2.6,0 a 1.3,1.3 0 1,0 -2.6,0" android:fillColor="#B405FF" />
 
-    <!-- TASSEL CONNECTOR & CAP -->
-    <!-- Connector Ring -->
-    <path android:pathData="M 100,150.5 m -4.5,0 a 4.5,4.5 0 1,0 9,0 a 4.5,4.5 0 1,0 -9,0" android:fillColor="#7C4DFF" />
-    <!-- Cap Band -->
-    <path android:pathData="M 92,156 C 92,154.5 108,154.5 108,156 L 107,160 C 107,161 93,161 93,160 Z" android:fillColor="#651FFF" />
+    <!-- Bead 13 (Bottom Center, 6 o'clock) - Rich Glowing Magenta Purple -->
+    <path android:pathData="M 100.0,164.0 m -5.8,0 a 5.8,5.8 0 1,0 11.6,0 a 5.8,5.8 0 1,0 -11.6,0">
+        <aapt:attr name="android:fillColor">
+            <gradient android:startX="97.5" android:startY="161.5" android:endX="102.5" android:endY="166.5" android:type="radial" android:gradientRadius="6.0">
+                <item android:offset="0.0" android:color="#D628FF" />
+                <item android:offset="0.6" android:color="#B504FF" />
+                <item android:offset="1.0" android:color="#8001C8" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M 98.2,162.2 m -1.8,0 a 1.8,1.8 0 1,0 3.6,0 a 1.8,1.8 0 1,0 -3.6,0" android:fillColor="#E6FFFFFF" />
+    <path android:pathData="M 92.3,163.5 m -1.3,0 a 1.3,1.3 0 1,0 2.6,0 a 1.3,1.3 0 1,0 -2.6,0" android:fillColor="#B405FF" />
 
-    <!-- TASSEL STRANDS -->
+    <!-- Bead 14 - Vivid Purple Magenta -->
+    <path android:pathData="M 84.7,162.1 m -5.8,0 a 5.8,5.8 0 1,0 11.6,0 a 5.8,5.8 0 1,0 -11.6,0">
+        <aapt:attr name="android:fillColor">
+            <gradient android:startX="82.4" android:startY="159.8" android:endX="87.4" android:endY="164.8" android:type="radial" android:gradientRadius="6.0">
+                <item android:offset="0.0" android:color="#CB2CFF" />
+                <item android:offset="0.6" android:color="#A905FF" />
+                <item android:offset="1.0" android:color="#7702C2" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M 82.9,160.3 m -1.8,0 a 1.8,1.8 0 1,0 3.6,0 a 1.8,1.8 0 1,0 -3.6,0" android:fillColor="#E6FFFFFF" />
+    <path android:pathData="M 77.3,159.8 m -1.3,0 a 1.3,1.3 0 1,0 2.6,0 a 1.3,1.3 0 1,0 -2.6,0" android:fillColor="#A204FF" />
+
+    <!-- Bead 15 - Deep Purple -->
+    <path android:pathData="M 70.3,156.7 m -5.8,0 a 5.8,5.8 0 1,0 11.6,0 a 5.8,5.8 0 1,0 -11.6,0">
+        <aapt:attr name="android:fillColor">
+            <gradient android:startX="68.0" android:startY="154.4" android:endX="73.0" android:endY="159.4" android:type="radial" android:gradientRadius="6.0">
+                <item android:offset="0.0" android:color="#BD33FF" />
+                <item android:offset="0.6" android:color="#9705FF" />
+                <item android:offset="1.0" android:color="#6702BD" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M 68.5,154.9 m -1.8,0 a 1.8,1.8 0 1,0 3.6,0 a 1.8,1.8 0 1,0 -3.6,0" android:fillColor="#E6FFFFFF" />
+    <path android:pathData="M 63.6,152.7 m -1.3,0 a 1.3,1.3 0 1,0 2.6,0 a 1.3,1.3 0 1,0 -2.6,0" android:fillColor="#8C05FF" />
+
+    <!-- Bead 16 - Violet -->
+    <path android:pathData="M 57.6,147.9 m -5.8,0 a 5.8,5.8 0 1,0 11.6,0 a 5.8,5.8 0 1,0 -11.6,0">
+        <aapt:attr name="android:fillColor">
+            <gradient android:startX="55.3" android:startY="145.6" android:endX="60.3" android:endY="150.6" android:type="radial" android:gradientRadius="6.0">
+                <item android:offset="0.0" android:color="#A73DFF" />
+                <item android:offset="0.6" android:color="#7C08FF" />
+                <item android:offset="1.0" android:color="#5104BE" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M 55.8,146.1 m -1.8,0 a 1.8,1.8 0 1,0 3.6,0 a 1.8,1.8 0 1,0 -3.6,0" android:fillColor="#E6FFFFFF" />
+    <path android:pathData="M 52.1,142.4 m -1.3,0 a 1.3,1.3 0 1,0 2.6,0 a 1.3,1.3 0 1,0 -2.6,0" android:fillColor="#6E0DFF" />
+
+    <!-- Bead 17 - Deep Indigo Violet -->
+    <path android:pathData="M 47.3,136.4 m -5.8,0 a 5.8,5.8 0 1,0 11.6,0 a 5.8,5.8 0 1,0 -11.6,0">
+        <aapt:attr name="android:fillColor">
+            <gradient android:startX="45.0" android:startY="134.1" android:endX="50.0" android:endY="139.1" android:type="radial" android:gradientRadius="6.0">
+                <item android:offset="0.0" android:color="#904BFF" />
+                <item android:offset="0.6" android:color="#5F10FF" />
+                <item android:offset="1.0" android:color="#3C07BD" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M 45.5,134.6 m -1.8,0 a 1.8,1.8 0 1,0 3.6,0 a 1.8,1.8 0 1,0 -3.6,0" android:fillColor="#E6FFFFFF" />
+    <path android:pathData="M 43.3,129.7 m -1.3,0 a 1.3,1.3 0 1,0 2.6,0 a 1.3,1.3 0 1,0 -2.6,0" android:fillColor="#5218FF" />
+
+    <!-- Bead 18 - Indigo Blue -->
+    <path android:pathData="M 40.2,122.7 m -5.8,0 a 5.8,5.8 0 1,0 11.6,0 a 5.8,5.8 0 1,0 -11.6,0">
+        <aapt:attr name="android:fillColor">
+            <gradient android:startX="37.9" android:startY="120.4" android:endX="42.9" android:endY="125.4" android:type="radial" android:gradientRadius="6.0">
+                <item android:offset="0.0" android:color="#785BFF" />
+                <item android:offset="0.6" android:color="#421EFF" />
+                <item android:offset="1.0" android:color="#250EB8" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M 38.4,120.9 m -1.8,0 a 1.8,1.8 0 1,0 3.6,0 a 1.8,1.8 0 1,0 -3.6,0" android:fillColor="#E6FFFFFF" />
+    <path android:pathData="M 37.9,115.3 m -1.3,0 a 1.3,1.3 0 1,0 2.6,0 a 1.3,1.3 0 1,0 -2.6,0" android:fillColor="#3A28FF" />
+
+    <!-- Bead 19 - Royal Ultramarine Blue -->
+    <path android:pathData="M 36.5,107.7 m -5.8,0 a 5.8,5.8 0 1,0 11.6,0 a 5.8,5.8 0 1,0 -11.6,0">
+        <aapt:attr name="android:fillColor">
+            <gradient android:startX="34.2" android:startY="105.4" android:endX="39.2" android:endY="110.4" android:type="radial" android:gradientRadius="6.0">
+                <item android:offset="0.0" android:color="#6270FF" />
+                <item android:offset="0.6" android:color="#2832FF" />
+                <item android:offset="1.0" android:color="#151CBD" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M 34.7,105.9 m -1.8,0 a 1.8,1.8 0 1,0 3.6,0 a 1.8,1.8 0 1,0 -3.6,0" android:fillColor="#E6FFFFFF" />
+    <path android:pathData="M 36.0,100.0 m -1.3,0 a 1.3,1.3 0 1,0 2.6,0 a 1.3,1.3 0 1,0 -2.6,0" android:fillColor="#223BFF" />
+
+    <!-- Bead 20 - Cobalt Blue -->
+    <path android:pathData="M 36.5,92.3 m -5.8,0 a 5.8,5.8 0 1,0 11.6,0 a 5.8,5.8 0 1,0 -11.6,0">
+        <aapt:attr name="android:fillColor">
+            <gradient android:startX="34.2" android:startY="90.0" android:endX="39.2" android:endY="95.0" android:type="radial" android:gradientRadius="6.0">
+                <item android:offset="0.0" android:color="#4F85FF" />
+                <item android:offset="0.6" android:color="#1A47FF" />
+                <item android:offset="1.0" android:color="#0E2BBA" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M 34.7,90.5 m -1.8,0 a 1.8,1.8 0 1,0 3.6,0 a 1.8,1.8 0 1,0 -3.6,0" android:fillColor="#E6FFFFFF" />
+    <path android:pathData="M 37.9,84.7 m -1.3,0 a 1.3,1.3 0 1,0 2.6,0 a 1.3,1.3 0 1,0 -2.6,0" android:fillColor="#154FFF" />
+
+    <!-- Bead 21 - Deep Azure Blue -->
+    <path android:pathData="M 40.2,77.3 m -5.8,0 a 5.8,5.8 0 1,0 11.6,0 a 5.8,5.8 0 1,0 -11.6,0">
+        <aapt:attr name="android:fillColor">
+            <gradient android:startX="37.9" android:startY="75.0" android:endX="42.9" android:endY="80.0" android:type="radial" android:gradientRadius="6.0">
+                <item android:offset="0.0" android:color="#3B9EFF" />
+                <item android:offset="0.6" android:color="#0F5FFF" />
+                <item android:offset="1.0" android:color="#083EB5" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M 38.4,75.5 m -1.8,0 a 1.8,1.8 0 1,0 3.6,0 a 1.8,1.8 0 1,0 -3.6,0" android:fillColor="#E6FFFFFF" />
+    <path android:pathData="M 43.3,70.3 m -1.3,0 a 1.3,1.3 0 1,0 2.6,0 a 1.3,1.3 0 1,0 -2.6,0" android:fillColor="#086EFF" />
+
+    <!-- Bead 22 - Electric Azure -->
+    <path android:pathData="M 47.3,63.6 m -5.8,0 a 5.8,5.8 0 1,0 11.6,0 a 5.8,5.8 0 1,0 -11.6,0">
+        <aapt:attr name="android:fillColor">
+            <gradient android:startX="45.0" android:startY="61.3" android:endX="50.0" android:endY="66.3" android:type="radial" android:gradientRadius="6.0">
+                <item android:offset="0.0" android:color="#36B8FF" />
+                <item android:offset="0.6" android:color="#007CFF" />
+                <item android:offset="1.0" android:color="#0053BD" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M 45.5,61.8 m -1.8,0 a 1.8,1.8 0 1,0 3.6,0 a 1.8,1.8 0 1,0 -3.6,0" android:fillColor="#E6FFFFFF" />
+    <path android:pathData="M 52.1,57.6 m -1.3,0 a 1.3,1.3 0 1,0 2.6,0 a 1.3,1.3 0 1,0 -2.6,0" android:fillColor="#0088FF" />
+
+    <!-- Bead 23 - Sky Blue -->
+    <path android:pathData="M 57.6,52.1 m -5.8,0 a 5.8,5.8 0 1,0 11.6,0 a 5.8,5.8 0 1,0 -11.6,0">
+        <aapt:attr name="android:fillColor">
+            <gradient android:startX="55.3" android:startY="49.8" android:endX="60.3" android:endY="54.8" android:type="radial" android:gradientRadius="6.0">
+                <item android:offset="0.0" android:color="#4AD6FF" />
+                <item android:offset="0.6" android:color="#009AFF" />
+                <item android:offset="1.0" android:color="#006BB8" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M 55.8,50.3 m -1.8,0 a 1.8,1.8 0 1,0 3.6,0 a 1.8,1.8 0 1,0 -3.6,0" android:fillColor="#E6FFFFFF" />
+    <path android:pathData="M 63.6,47.3 m -1.3,0 a 1.3,1.3 0 1,0 2.6,0 a 1.3,1.3 0 1,0 -2.6,0" android:fillColor="#00A8FF" />
+
+    <!-- Bead 24 - Vivid Sky Cyan -->
+    <path android:pathData="M 70.3,43.3 m -5.8,0 a 5.8,5.8 0 1,0 11.6,0 a 5.8,5.8 0 1,0 -11.6,0">
+        <aapt:attr name="android:fillColor">
+            <gradient android:startX="68.0" android:startY="41.0" android:endX="73.0" android:endY="46.0" android:type="radial" android:gradientRadius="6.0">
+                <item android:offset="0.0" android:color="#5EEFFF" />
+                <item android:offset="0.6" android:color="#00B8FF" />
+                <item android:offset="1.0" android:color="#0082BD" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M 68.5,41.5 m -1.8,0 a 1.8,1.8 0 1,0 3.6,0 a 1.8,1.8 0 1,0 -3.6,0" android:fillColor="#E6FFFFFF" />
+    <path android:pathData="M 77.3,40.2 m -1.3,0 a 1.3,1.3 0 1,0 2.6,0 a 1.3,1.3 0 1,0 -2.6,0" android:fillColor="#00C4FF" />
+
+    <!-- Bead 25 - Bright Cyan -->
+    <path android:pathData="M 84.7,37.9 m -5.8,0 a 5.8,5.8 0 1,0 11.6,0 a 5.8,5.8 0 1,0 -11.6,0">
+        <aapt:attr name="android:fillColor">
+            <gradient android:startX="82.4" android:startY="35.5" android:endX="87.4" android:endY="40.5" android:type="radial" android:gradientRadius="6.0">
+                <item android:offset="0.0" android:color="#73F4FF" />
+                <item android:offset="0.6" android:color="#00CEFF" />
+                <item android:offset="1.0" android:color="#0093C2" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M 82.9,36.1 m -1.8,0 a 1.8,1.8 0 1,0 3.6,0 a 1.8,1.8 0 1,0 -3.6,0" android:fillColor="#E6FFFFFF" />
+    <path android:pathData="M 92.3,36.5 m -1.3,0 a 1.3,1.3 0 1,0 2.6,0 a 1.3,1.3 0 1,0 -2.6,0" android:fillColor="#00D2FF" />
+
+
+    <!-- ======================================================= -->
+    <!-- 3. CENTRAL VAISHNAVA TILAK (URDHVA PUNDRA)             -->
+    <!-- Pristine White Parallel Arms + Sharp Leaf Cusp Bottom   -->
+    <!-- Exactly matching the user's reference image geometry   -->
+    <!-- ======================================================= -->
+
+    <!-- Drop Shadow directly under the Tilak -->
     <path
-        android:pathData="M 94,160 C 92,168 85,178 80,186 C 84,186 91,178 95,160 Z"
-        android:fillColor="#651FFF" />
+        android:pathData="M 88.5,70.0 L 91.5,70.0 L 91.5,112.0 C 91.5,119 95.0,126 100.0,133.5 C 105.0,126 108.5,119 108.5,112.0 L 108.5,70.0 L 111.5,70.0 L 111.5,112.0 C 111.5,122 107.0,131 100.0,140.0 C 93.0,131 88.5,122 88.5,112.0 Z"
+        android:fillColor="#66000000" />
+
+    <!-- 3D Bevel Rim Shadow (Silver Slate Grey) -->
     <path
-        android:pathData="M 96,160 C 95,170 91,180 88,188 C 92,188 97,178 98,160 Z"
-        android:fillColor="#7C4DFF" />
+        android:pathData="M 88.5,70.0 L 90.0,70.0 L 90.0,112.0 C 90.0,120.5 94.0,128.5 100.0,138.5 C 94.0,130.0 89.5,121.5 88.5,112.0 Z"
+        android:fillColor="#94A3B8" />
+
+    <!-- Solid White Porcelain Body of the Tilak -->
     <path
-        android:pathData="M 98,160 C 99,172 100,180 100,190 C 101,180 101,172 102,160 Z"
-        android:fillColor="#6200EA" />
+        android:pathData="M 88.5,70.0 L 91.5,70.0 L 91.5,112.0 C 91.5,119 95.0,126 100.0,133.5 C 105.0,126 108.5,119 108.5,112.0 L 108.5,70.0 L 111.5,70.0 L 111.5,112.0 C 111.5,122 107.0,131 100.0,140.0 C 93.0,131 88.5,122 88.5,112.0 Z"
+        android:fillColor="#FFFFFF" />
+
+    <!-- Pure White Front Specular Highlight on Right Arm -->
     <path
-        android:pathData="M 102,160 C 103,178 108,188 112,188 C 109,180 105,170 104,160 Z"
-        android:fillColor="#7C4DFF" />
+        android:pathData="M 109.5,70.0 L 111.5,70.0 L 111.5,112.0 C 111.5,121.5 107.5,130.0 100.0,139.5 C 106.5,129.0 109.5,120.5 109.5,112.0 Z"
+        android:fillColor="#FFFFFF" />
+
+
+    <!-- ======================================================= -->
+    <!-- 4. CENTRAL SRI CHURNA (KUMKUM RED FLAME)                -->
+    <!-- Vibrant Vermilion Needle-Flame in the exact center      -->
+    <!-- ======================================================= -->
+
+    <!-- Kumkum Drop Shadow -->
     <path
-        android:pathData="M 105,160 C 109,178 116,186 120,186 C 115,178 108,168 106,160 Z"
-        android:fillColor="#651FFF" />
+        android:pathData="M 100.0,73.0 C 100.0,73.0 102.2,90 102.2,106 C 102.2,115 101.5,122.0 100.0,122.0 C 98.5,122.0 97.8,115 97.8,106 C 97.8,90 100.0,73.0 100.0,73.0 Z"
+        android:fillColor="#44000000" />
+
+    <!-- Vibrant Red Flame Body -->
+    <path
+        android:pathData="M 100.0,73.0 C 100.0,73.0 102.2,90 102.2,106 C 102.2,115 101.5,122.0 100.0,122.0 C 98.5,122.0 97.8,115 97.8,106 C 97.8,90 100.0,73.0 100.0,73.0 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="100"
+                android:startY="73"
+                android:endX="100"
+                android:endY="122"
+                android:type="linear">
+                <item android:offset="0.0" android:color="#FF1744" />
+                <item android:offset="0.5" android:color="#F5002F" />
+                <item android:offset="1.0" android:color="#C50020" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Kumkum 3D Center Shimmer Highlight -->
+    <path
+        android:pathData="M 100.0,76.0 C 100.0,76.0 101.1,90 101.1,104 C 101.1,112 100.0,118.0 100.0,118.0 C 100.0,118.0 98.9,112 98.9,104 C 98.9,90 100.0,76.0 100.0,76.0 Z"
+        android:fillColor="#80FFA3B5" />
 
 </vector>

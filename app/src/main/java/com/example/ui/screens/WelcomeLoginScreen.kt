@@ -89,6 +89,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.R
 import com.example.data.auth.AuthState
+import com.example.ui.components.JaapLogoGraphic
 import com.example.ui.components.LegalTermsDialog
 import com.example.ui.viewmodel.JaapViewModel
 import kotlin.math.cos
@@ -625,37 +626,13 @@ fun WelcomeLoginScreen(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 // ----------------------------------------------------
-                // 1. EXISTING APP LOGO WITH SOFT AMBIENT BACKGROUND GLOW
+                // 1. APP LOGO (TRANSPARENT BACKGROUND ON SCREEN CANVAS)
                 // ----------------------------------------------------
-                Box(
-                    modifier = Modifier.size(130.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    // Subtle background ambient aura
-                    Box(
-                        modifier = Modifier
-                            .size(145.dp)
-                            .background(
-                                brush = Brush.radialGradient(
-                                    colors = listOf(
-                                        Color(0xFF00E5FF).copy(alpha = 0.28f),
-                                        Color(0xFF3877FF).copy(alpha = 0.20f),
-                                        Color(0xFF7C4DFF).copy(alpha = 0.12f),
-                                        Color.Transparent
-                                    )
-                                ),
-                                shape = CircleShape
-                            )
-                    )
-
-                    // UNMODIFIED Existing Logo Resource
-                    Image(
-                        painter = painterResource(id = R.drawable.app_logo),
-                        contentDescription = "Naam Jaap Logo",
-                        contentScale = ContentScale.Fit,
-                        modifier = Modifier.size(120.dp)
-                    )
-                }
+                JaapLogoGraphic(
+                    sizeDp = 136.dp,
+                    showCircularBadge = false,
+                    animatedGlow = true
+                )
 
                 Spacer(modifier = Modifier.height(20.dp))
 
