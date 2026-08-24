@@ -386,6 +386,50 @@ class ExampleRobolectricTest {
     }
 
     @Test
+    fun testExactBeadSequence0to109() = runBlocking {
+        // 0 -> 1
+        var completed = repository.incrementBead()
+        assertFalse(completed)
+        var settings = repository.getUserSettingsDirect()
+        assertEquals(1, settings?.currentBeadInIncompleteMala)
+        assertEquals(1, settings?.currentMalaNumber)
+
+        // 1 -> 2
+        completed = repository.incrementBead()
+        assertFalse(completed)
+        settings = repository.getUserSettingsDirect()
+        assertEquals(2, settings?.currentBeadInIncompleteMala)
+
+        // Advance to 106
+        for (i in 3..106) {
+            repository.incrementBead()
+        }
+        settings = repository.getUserSettingsDirect()
+        assertEquals(106, settings?.currentBeadInIncompleteMala)
+
+        // 106 -> 107
+        completed = repository.incrementBead()
+        assertFalse(completed)
+        settings = repository.getUserSettingsDirect()
+        assertEquals(107, settings?.currentBeadInIncompleteMala)
+
+        // 107 -> 108 (Mala complete: bead resets to 0, mala count increments to 2)
+        completed = repository.incrementBead()
+        assertTrue("108th bead must trigger Mala completion", completed)
+        settings = repository.getUserSettingsDirect()
+        assertEquals(0, settings?.currentBeadInIncompleteMala)
+        assertEquals(2, settings?.currentMalaNumber)
+        assertEquals(1, settings?.currentSessionMalasCount)
+
+        // 108 -> 109 (1st bead of 2nd mala)
+        completed = repository.incrementBead()
+        assertFalse(completed)
+        settings = repository.getUserSettingsDirect()
+        assertEquals(1, settings?.currentBeadInIncompleteMala)
+        assertEquals(2, settings?.currentMalaNumber)
+    }
+
+    @Test
     fun testMainActivityLifecycleAndUiInflation() {
         val controller = org.robolectric.Robolectric.buildActivity(MainActivity::class.java)
         val activity = controller.create().start().resume().get()

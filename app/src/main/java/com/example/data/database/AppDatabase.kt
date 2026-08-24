@@ -179,18 +179,29 @@ abstract class AppDatabase : RoomDatabase() {
                             MIGRATION_4_7,
                             MIGRATION_5_7
                         )
-                        .fallbackToDestructiveMigration()
                         .fallbackToDestructiveMigrationOnDowngrade()
                         .addCallback(AppDatabaseCallback())
                         .build()
                 } catch (e: Throwable) {
-                    Log.e("AppDatabase", "Fallback destructive database builder: ${e.message}")
+                    Log.e("AppDatabase", "Error initializing database with explicit migrations: ${e.message}")
                     Room.databaseBuilder(
                         context.applicationContext,
                         AppDatabase::class.java,
                         "jaap_counter_db"
                     )
-                        .fallbackToDestructiveMigration()
+                        .addMigrations(
+                            MIGRATION_1_2,
+                            MIGRATION_2_3,
+                            MIGRATION_3_4,
+                            MIGRATION_4_5,
+                            MIGRATION_5_6,
+                            MIGRATION_6_7,
+                            MIGRATION_1_7,
+                            MIGRATION_2_7,
+                            MIGRATION_3_7,
+                            MIGRATION_4_7,
+                            MIGRATION_5_7
+                        )
                         .fallbackToDestructiveMigrationOnDowngrade()
                         .addCallback(AppDatabaseCallback())
                         .build()
