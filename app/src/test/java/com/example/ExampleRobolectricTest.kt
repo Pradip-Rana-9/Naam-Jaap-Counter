@@ -361,5 +361,36 @@ class ExampleRobolectricTest {
         assertEquals("Guest bead count must be preserved after registration", 108, preservedProgress?.totalBeadsCompleted)
         assertEquals("Guest mala count must be preserved after registration", 1, preservedProgress?.totalMalasCompleted)
     }
+
+    @Test
+    fun testAllLauncherDrawablesAndMipmapsCanInflate() {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+
+        // Test in-app logo
+        val appLogo = androidx.core.content.ContextCompat.getDrawable(context, com.example.R.drawable.app_logo)
+        org.junit.Assert.assertNotNull("app_logo must be loadable as drawable", appLogo)
+
+        // Test launcher background and foreground
+        val bg = androidx.core.content.ContextCompat.getDrawable(context, com.example.R.drawable.ic_launcher_background)
+        org.junit.Assert.assertNotNull("ic_launcher_background must be loadable", bg)
+
+        val fg = androidx.core.content.ContextCompat.getDrawable(context, com.example.R.drawable.ic_launcher_foreground)
+        org.junit.Assert.assertNotNull("ic_launcher_foreground must be loadable", fg)
+
+        // Test mipmaps
+        val launcher = androidx.core.content.ContextCompat.getDrawable(context, com.example.R.mipmap.ic_launcher)
+        org.junit.Assert.assertNotNull("ic_launcher mipmap must be loadable", launcher)
+
+        val launcherRound = androidx.core.content.ContextCompat.getDrawable(context, com.example.R.mipmap.ic_launcher_round)
+        org.junit.Assert.assertNotNull("ic_launcher_round mipmap must be loadable", launcherRound)
+    }
+
+    @Test
+    fun testMainActivityLifecycleAndUiInflation() {
+        val controller = org.robolectric.Robolectric.buildActivity(MainActivity::class.java)
+        val activity = controller.create().start().resume().get()
+        org.junit.Assert.assertNotNull("MainActivity must create and resume without crashing", activity)
+        controller.pause().stop().destroy()
+    }
 }
 
