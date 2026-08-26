@@ -138,27 +138,29 @@ class JaapRepository(
 
     fun getWeeklyCompletionDays(): Flow<Set<Int>> {
         return allDailyProgress.map { progressList ->
-            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val cal = Calendar.getInstance()
-            while (cal.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
-                cal.add(Calendar.DAY_OF_YEAR, -1)
-            }
-
-            val weekDates = (0..6).map {
-                val d = sdf.format(cal.time)
-                cal.add(Calendar.DAY_OF_YEAR, 1)
-                d
-            }
-
-            val map = progressList.associateBy { it.dateString }
-            val completed = mutableSetOf<Int>()
-            weekDates.forEachIndexed { idx, dateStr ->
-                val prog = map[dateStr]
-                if (prog != null && (prog.totalBeadsCompleted > 0 || prog.totalMalasCompleted > 0)) {
-                    completed.add(idx)
+            withContext(Dispatchers.Default) {
+                val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                val cal = Calendar.getInstance()
+                while (cal.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
+                    cal.add(Calendar.DAY_OF_YEAR, -1)
                 }
+
+                val weekDates = (0..6).map {
+                    val d = sdf.format(cal.time)
+                    cal.add(Calendar.DAY_OF_YEAR, 1)
+                    d
+                }
+
+                val map = progressList.associateBy { it.dateString }
+                val completed = mutableSetOf<Int>()
+                weekDates.forEachIndexed { idx, dateStr ->
+                    val prog = map[dateStr]
+                    if (prog != null && (prog.totalBeadsCompleted > 0 || prog.totalMalasCompleted > 0)) {
+                        completed.add(idx)
+                    }
+                }
+                completed
             }
-            completed
         }
     }
 
@@ -468,9 +470,9 @@ class JaapRepository(
     }
 
     // Calculate streaks from daily_progress entries
-    suspend fun calculateStreaks(): Pair<Int, Int> {
+    suspend fun calculateStreaks(): Pair<Int, Int> = withContext(Dispatchers.Default) {
         val progressList = dao.getAllDailyProgressDirect().filter { it.totalBeadsCompleted > 0 }
-        if (progressList.isEmpty()) return Pair(0, 0)
+        if (progressList.isEmpty()) return@withContext Pair(0, 0)
 
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val dateSet = progressList.map { it.dateString }.toSet()
@@ -514,7 +516,7 @@ class JaapRepository(
         }
 
         if (currentStreak > maxStreak) maxStreak = currentStreak
-        return Pair(currentStreak, maxStreak)
+        Pair(currentStreak, maxStreak)
     }
 
     suspend fun resetSessionCounters() {

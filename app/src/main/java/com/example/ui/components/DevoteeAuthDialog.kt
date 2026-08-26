@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -59,11 +60,15 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ui.viewmodel.JaapViewModel
@@ -427,12 +432,7 @@ fun DevoteeAuthDialog(
                 // Terms agreement row
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null
-                        ) { termsAccepted = !termsAccepted }
+                    modifier = Modifier.fillMaxWidth()
                 ) {
                     Checkbox(
                         checked = termsAccepted,
@@ -442,43 +442,77 @@ fun DevoteeAuthDialog(
                             uncheckedColor = Color(0xFF8B7CB2),
                             checkmarkColor = Color(0xFF0C0720)
                         ),
-                        modifier = Modifier.size(32.dp).semantics {
-                            contentDescription = "Accept Terms & Conditions and Privacy Policy"
+                        modifier = Modifier
+                            .size(28.dp)
+                            .semantics {
+                                contentDescription = "Accept Terms & Conditions and Privacy Policy"
+                            }
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+
+                    val authTermsAnnotated = remember {
+                        buildAnnotatedString {
+                            append("I agree to ")
+                            pushStringAnnotation(tag = "TERMS", annotation = "terms")
+                            withStyle(
+                                style = SpanStyle(
+                                    color = Color(0xFF38BDF8),
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                            ) {
+                                append("Terms")
+                            }
+                            pop()
+                            append(" & ")
+                            pushStringAnnotation(tag = "PRIVACY", annotation = "privacy")
+                            withStyle(
+                                style = SpanStyle(
+                                    color = Color(0xFF38BDF8),
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                            ) {
+                                append("Privacy Policy")
+                            }
+                            pop()
+                        }
+                    }
+
+                    ClickableText(
+                        text = authTermsAnnotated,
+                        style = TextStyle(
+                            color = Color(0xFFCFC8E5),
+                            fontSize = 11.5.sp,
+                            lineHeight = 16.sp
+                        ),
+                        modifier = Modifier.weight(1f),
+                        onClick = { offset ->
+                            val termsAnnotation = authTermsAnnotated.getStringAnnotations(
+                                tag = "TERMS",
+                                start = offset,
+                                end = offset
+                            ).firstOrNull()
+
+                            val privacyAnnotation = authTermsAnnotated.getStringAnnotations(
+                                tag = "PRIVACY",
+                                start = offset,
+                                end = offset
+                            ).firstOrNull()
+
+                            when {
+                                termsAnnotation != null -> {
+                                    legalDialogInitialTab = 1
+                                    showLegalDialog = true
+                                }
+                                privacyAnnotation != null -> {
+                                    legalDialogInitialTab = 0
+                                    showLegalDialog = true
+                                }
+                                else -> {
+                                    termsAccepted = !termsAccepted
+                                }
+                            }
                         }
                     )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Row(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = "I agree to ",
-                            color = Color(0xFFCFC8E5),
-                            fontSize = 11.sp
-                        )
-                        Text(
-                            text = "Terms",
-                            color = Color(0xFF38BDF8),
-                            fontSize = 11.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            modifier = Modifier.clickable {
-                                legalDialogInitialTab = 1
-                                showLegalDialog = true
-                            }
-                        )
-                        Text(
-                            text = " & ",
-                            color = Color(0xFFCFC8E5),
-                            fontSize = 11.sp
-                        )
-                        Text(
-                            text = "Privacy Policy",
-                            color = Color(0xFF38BDF8),
-                            fontSize = 11.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            modifier = Modifier.clickable {
-                                legalDialogInitialTab = 0
-                                showLegalDialog = true
-                            }
-                        )
-                    }
                 }
             }
         },

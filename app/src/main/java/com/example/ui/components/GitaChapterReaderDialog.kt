@@ -459,14 +459,16 @@ fun GitaChapterReaderDialog(
                     // ==========================================
                     // CHAPTER SHLOK LIST VIEW
                     // ==========================================
-                    val filteredShloks = if (searchQuery.isBlank()) {
-                        shloks
-                    } else {
-                        shloks.filter {
-                            it.sanskrit.contains(searchQuery, ignoreCase = true) ||
-                                    it.hinglishMeaning.contains(searchQuery, ignoreCase = true) ||
-                                    it.simpleExplanation.contains(searchQuery, ignoreCase = true) ||
-                                    it.shlokNumber.toString() == searchQuery
+                    val filteredShloks = remember(shloks, searchQuery) {
+                        if (searchQuery.isBlank()) {
+                            shloks
+                        } else {
+                            shloks.filter {
+                                it.sanskrit.contains(searchQuery, ignoreCase = true) ||
+                                        it.hinglishMeaning.contains(searchQuery, ignoreCase = true) ||
+                                        it.simpleExplanation.contains(searchQuery, ignoreCase = true) ||
+                                        it.shlokNumber.toString() == searchQuery
+                            }
                         }
                     }
 
@@ -588,7 +590,10 @@ fun GitaChapterReaderDialog(
                             modifier = Modifier.weight(1f),
                             verticalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
-                            itemsIndexed(filteredShloks) { _, item ->
+                            itemsIndexed(
+                                items = filteredShloks,
+                                key = { _, item -> "${item.chapterNumber}_${item.shlokNumber}" }
+                            ) { _, item ->
                                 val actualIndex = shloks.indexOf(item)
 
                                 Card(

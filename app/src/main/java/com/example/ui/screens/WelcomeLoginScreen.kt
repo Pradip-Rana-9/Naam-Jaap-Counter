@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -78,13 +79,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.R
@@ -803,7 +807,7 @@ fun WelcomeLoginScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                // Checkbox Row (Full row is accessible and tappable)
+                // Checkbox Row (Full row is accessible, responsive and never cuts text)
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -824,16 +828,7 @@ fun WelcomeLoginScreen(
                                 Color(0xFF2E2154).copy(alpha = 0.5f),
                             shape = RoundedCornerShape(12.dp)
                         )
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null
-                        ) {
-                            termsAccepted = !termsAccepted
-                            if (termsAccepted) {
-                                showTermsWarning = false
-                            }
-                        }
-                        .padding(horizontal = 8.dp, vertical = 6.dp)
+                        .padding(horizontal = 12.dp, vertical = 10.dp)
                         .testTag("terms_acceptance_row")
                 ) {
                     Row(
@@ -854,29 +849,29 @@ fun WelcomeLoginScreen(
                                 checkmarkColor = Color(0xFF0C0720)
                             ),
                             modifier = Modifier
-                                .size(36.dp)
+                                .size(24.dp)
                                 .semantics {
-                                    contentDescription = "Accept Terms & Conditions and Privacy Policy"
+                                    contentDescription = "Accept Terms and Privacy Policy"
                                 }
                                 .testTag("checkbox_terms_accepted")
                         )
 
-                        Spacer(modifier = Modifier.width(6.dp))
+                        Spacer(modifier = Modifier.width(10.dp))
 
-                        // Clickable legal text
+                        // Multi-line safe layout with clickable links
                         Row(
                             modifier = Modifier.weight(1f),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
                                 text = "I agree to the ",
-                                color = Color(0xFFCFC8E5),
-                                fontSize = 12.sp
+                                color = Color(0xFFD4CCE6),
+                                fontSize = 12.5.sp
                             )
                             Text(
-                                text = "Terms & Conditions",
+                                text = "Terms",
                                 color = Color(0xFF38BDF8),
-                                fontSize = 12.sp,
+                                fontSize = 12.5.sp,
                                 fontWeight = FontWeight.SemiBold,
                                 modifier = Modifier
                                     .clickable {
@@ -886,14 +881,14 @@ fun WelcomeLoginScreen(
                                     .testTag("link_terms_conditions")
                             )
                             Text(
-                                text = " and ",
-                                color = Color(0xFFCFC8E5),
-                                fontSize = 12.sp
+                                text = " & ",
+                                color = Color(0xFFD4CCE6),
+                                fontSize = 12.5.sp
                             )
                             Text(
                                 text = "Privacy Policy",
                                 color = Color(0xFF38BDF8),
-                                fontSize = 12.sp,
+                                fontSize = 12.5.sp,
                                 fontWeight = FontWeight.SemiBold,
                                 modifier = Modifier
                                     .clickable {

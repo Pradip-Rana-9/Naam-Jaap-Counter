@@ -457,6 +457,56 @@ object GitaDataRepository {
         )
     )
 
+    // Memoized complete 18 chapters map initialized once for O(1) instantaneous access
+    private val cachedAllChaptersMap: Map<Int, List<GitaShlokItem>> by lazy {
+        (1..18).associateWith { chNum ->
+            val direct = chapterShloksMap[chNum]
+            if (!direct.isNullOrEmpty()) {
+                direct
+            } else {
+                val fromWisdom = allGitaWisdomList.filter { it.chapterNumber == chNum }
+                if (fromWisdom.isNotEmpty()) {
+                    fromWisdom
+                } else {
+                    val chNameEng = getChapterNameEnglish(chNum)
+                    val chNameSan = getChapterNameSanskrit(chNum)
+                    listOf(
+                        GitaShlokItem(
+                            chapterNumber = chNum,
+                            shlokNumber = 1,
+                            chapterNameEnglish = chNameEng,
+                            chapterNameSanskrit = chNameSan,
+                            sanskrit = "श्रीभगवानुवाच। इदं तु ते गुह्यतमं प्रवक्ष्याम्यनसूयवे। ज्ञानं विज्ञानसहितं यज्ज्ञात्वा मोक्ष्यसेऽशुभात्॥",
+                            transliteration = "śhrī-bhagavān uvācha: idaṁ tu te guhyatamaṁ pravakṣhyāmy anasūyave\njñānaṁ vijñāna-sahitaṁ yaj jñātvā mokṣhyase ’śhubhāt",
+                            hinglishMeaning = "Shri Bhagwan ne kaha: Dosh-drishti se rahit he Arjun, ab main tumhe is param gopniya aatm-gyan aur anubhav ko batata hoon, jise jaan kar tum sansar ke sabhi ashubho (kashto) se mukt ho jaoge.",
+                            simpleExplanation = "Adhyay $chNum ($chNameEng) mein Bhagwan Shri Krishna aatm-shuddhi, nishkama karma aur Ishwar-bhakti ka divya gyan pradan karte hain. Shuddh bhav se Prabhu smaran karne par man anant shanti pata hai."
+                        ),
+                        GitaShlokItem(
+                            chapterNumber = chNum,
+                            shlokNumber = 2,
+                            chapterNameEnglish = chNameEng,
+                            chapterNameSanskrit = chNameSan,
+                            sanskrit = "राजविद्या राजगुह्यं पवित्रमिदमुत्तमम्। प्रत्यक्षावगमं धर्म्यं सुसुखं कर्तुमव्ययम्॥",
+                            transliteration = "rāja-vidyā rāja-guhyaṁ pavitram idam uttamam\npratyakṣhāvagamaṁ dharmyaṁ su-sukhaṁ kartum avyayam",
+                            hinglishMeaning = "Yeh gyan samast vidyaon ka raja hai, sabhi rahasyon mein shreshtha hai, atyant pavitra aur pratyaksh anubhav karne yogya dharm-yukt aur anandprad hai.",
+                            simpleExplanation = "Bhagavad Gita ka har shlok manushya ke bheetar aatm-shakti aur sachhe prem ka sanchaar karta hai. Daily jeevan mein Gita ke vachano ka dhyan karein."
+                        ),
+                        GitaShlokItem(
+                            chapterNumber = chNum,
+                            shlokNumber = 3,
+                            chapterNameEnglish = chNameEng,
+                            chapterNameSanskrit = chNameSan,
+                            sanskrit = "मन्मना भव मद्भक्तो मद्याजी मां नमस्कुरु। मामेवैष्यसि युक्त्वैवमात्मानं मत्परायणः॥",
+                            transliteration = "man-manā bhava mad-bhakto mad-yājī māṁ namaskuru\nmām evaiṣhyasi yuktvaivam ātmānaṁ mat-parāyaṇaḥ",
+                            hinglishMeaning = "Apne mann ko mujh mein lagao, mere bhakt bano, mera pujan karo aur mujhe namaskar karo. Mujh mein aatma ko lagane se tum mujhe hi prapt karoge.",
+                            simpleExplanation = "Jab hum har karya ko Ishwar ki seva samajh kar arpit karte hain, toh har kaam pooja ban jata hai aur man shanti se bhar jata hai."
+                        )
+                    )
+                }
+            }
+        }
+    }
+
     fun getWisdomForDay(dayOfYear: Int): GitaShlokItem {
         val index = (dayOfYear % allGitaWisdomList.size + allGitaWisdomList.size) % allGitaWisdomList.size
         return allGitaWisdomList[index]
@@ -471,44 +521,7 @@ object GitaDataRepository {
     }
 
     fun getShloksForChapter(chapterNumber: Int): List<GitaShlokItem> {
-        val direct = chapterShloksMap[chapterNumber]
-        if (!direct.isNullOrEmpty()) return direct
-
-        val fromWisdom = allGitaWisdomList.filter { it.chapterNumber == chapterNumber }
-        if (fromWisdom.isNotEmpty()) return fromWisdom
-
-        // Fallback for remaining chapters with accurate chapter metadata and rich meaningful content
-        val chNameEng = getChapterNameEnglish(chapterNumber)
-        val chNameSan = getChapterNameSanskrit(chapterNumber)
-        return (1..3).map { idx ->
-            val sanskritTxt = when (idx) {
-                1 -> "श्रीभगवानुवाच। इदं तु ते गुह्यतमं प्रवक्ष्याम्यनसूयवे। ज्ञानं विज्ञानसहितं यज्ज्ञात्वा मोक्ष्यसेऽशुभात्॥"
-                2 -> "राजविद्या राजगुह्यं पवित्रमिदमुत्तमम्। प्रत्यक्षावगमं धर्म्यं सुसुखं कर्तुमव्ययम्॥"
-                else -> "मन्मना भव मद्भक्तो मद्याजी मां नमस्कुरु। मामेवैष्यसि युक्त्वैवमात्मानं मत्परायणः॥"
-            }
-            val transliterationTxt = when (idx) {
-                1 -> "śhrī-bhagavān uvācha: idaṁ tu te guhyatamaṁ pravakṣhyāmy anasūyave\njñānaṁ vijñāna-sahitaṁ yaj jñātvā mokṣhyase ’śhubhāt"
-                2 -> "rāja-vidyā rāja-guhyaṁ pavitram idam uttamam\npratyakṣhāvagamaṁ dharmyaṁ su-sukhaṁ kartum avyayam"
-                else -> "man-manā bhava mad-bhakto mad-yājī māṁ namaskuru\nmām evaiṣhyasi yuktvaivam ātmānaṁ mat-parāyaṇaḥ"
-            }
-            val hinglishMeaningTxt = when (idx) {
-                1 -> "Shri Bhagwan ne kaha: Dosh-drishti se rahit he Arjun, ab main tumhe is param gopniya aatm-gyan aur anubhav ko batata hoon, jise jaan kar tum sansar ke sabhi ashubho (kashto) se mukt ho jaoge."
-                2 -> "Yeh gyan samast vidyaon ka raja hai, sabhi rahasyon mein shreshtha hai, atyant pavitra aur pratyaksh anubhav karne yogya dharm-yukt aur anandprad hai."
-                else -> "Apne mann ko mujh mein lagao, mere bhakt bano, mera pujan karo aur mujhe namaskar karo. Mujh mein aatma ko lagane se tum mujhe hi prapt karoge."
-            }
-            val simpleExpl = "Adhyay $chapterNumber ($chNameEng) mein Bhagwan Shri Krishna aatm-shuddhi, nishkama karma aur Ishwar-bhakti ka divya gyan pradan karte hain. Jab hum shuddh bhav se Bhagwan ka smaran karte hain aur unke vachano ko apne aacharan mein laate hain, toh hamara mann shant, chinta-mukt aur divya anand se bhar jata hai."
-
-            GitaShlokItem(
-                chapterNumber = chapterNumber,
-                shlokNumber = idx,
-                chapterNameEnglish = chNameEng,
-                chapterNameSanskrit = chNameSan,
-                sanskrit = sanskritTxt,
-                transliteration = transliterationTxt,
-                hinglishMeaning = hinglishMeaningTxt,
-                simpleExplanation = simpleExpl
-            )
-        }
+        return cachedAllChaptersMap[chapterNumber] ?: allGitaWisdomList
     }
 
     fun getAllWisdomItems(): List<GitaShlokItem> = allGitaWisdomList
