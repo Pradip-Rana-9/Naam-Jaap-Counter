@@ -24,7 +24,7 @@ data class GitaShlokItem(
 
 object GitaDataRepository {
 
-    val allGitaWisdomList: List<GitaShlokItem> = listOf(
+    val featuredShloksList: List<GitaShlokItem> = listOf(
         GitaShlokItem(
             chapterNumber = 2,
             shlokNumber = 47,
@@ -464,9 +464,9 @@ object GitaDataRepository {
             if (!direct.isNullOrEmpty()) {
                 direct
             } else {
-                val fromWisdom = allGitaWisdomList.filter { it.chapterNumber == chNum }
-                if (fromWisdom.isNotEmpty()) {
-                    fromWisdom
+                val fromFeatured = featuredShloksList.filter { it.chapterNumber == chNum }
+                if (fromFeatured.isNotEmpty()) {
+                    fromFeatured
                 } else {
                     val chNameEng = getChapterNameEnglish(chNum)
                     val chNameSan = getChapterNameSanskrit(chNum)
@@ -507,24 +507,9 @@ object GitaDataRepository {
         }
     }
 
-    fun getWisdomForDay(dayOfYear: Int): GitaShlokItem {
-        val index = (dayOfYear % allGitaWisdomList.size + allGitaWisdomList.size) % allGitaWisdomList.size
-        return allGitaWisdomList[index]
-    }
-
-    fun getNextWisdom(currentItem: GitaShlokItem): GitaShlokItem {
-        val currentIndex = allGitaWisdomList.indexOfFirst { 
-            it.chapterNumber == currentItem.chapterNumber && it.shlokNumber == currentItem.shlokNumber 
-        }
-        val nextIndex = if (currentIndex == -1) 0 else (currentIndex + 1) % allGitaWisdomList.size
-        return allGitaWisdomList[nextIndex]
-    }
-
     fun getShloksForChapter(chapterNumber: Int): List<GitaShlokItem> {
-        return cachedAllChaptersMap[chapterNumber] ?: allGitaWisdomList
+        return cachedAllChaptersMap[chapterNumber] ?: featuredShloksList
     }
-
-    fun getAllWisdomItems(): List<GitaShlokItem> = allGitaWisdomList
 
     fun getChapterNameEnglish(chapterNumber: Int): String {
         return when (chapterNumber) {

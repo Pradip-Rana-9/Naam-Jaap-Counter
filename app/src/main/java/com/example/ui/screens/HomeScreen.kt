@@ -85,7 +85,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.R
 import com.example.ui.components.AvatarSelectionDialog
-import com.example.ui.components.DailyGitaWisdomCard
 import com.example.ui.components.DevoteeAuthDialog
 import com.example.ui.components.DevotionalNotificationDialog
 import com.example.ui.components.GuestModeReminderCard
@@ -814,14 +813,7 @@ fun HomeScreen(
             }
         }
 
-        // 9. DAILY WISDOM (BHAGAVAD GITA QUOTE)
-        item(key = "gita_wisdom") {
-            DailyGitaWisdomCard(
-                language = userSettings?.language ?: "HINGLISH"
-            )
-        }
-
-        // 10. KEEP GOING MOTIVATIONAL BANNER
+        // 9. KEEP GOING MOTIVATIONAL BANNER
         item(key = "motivational_banner") {
             Card(
                 modifier = Modifier.fillMaxWidth(),
