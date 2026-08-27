@@ -379,6 +379,20 @@ fun SankalpTrackerSection(
     }
 }
 
+object SankalpDateUtils {
+    private val sdf = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+
+    fun getDaysPassed(startDateString: String): Int {
+        return try {
+            val start = synchronized(sdf) { sdf.parse(startDateString) } ?: Date()
+            val diffMillis = System.currentTimeMillis() - start.time
+            ((diffMillis / (1000 * 60 * 60 * 24)) + 1).toInt().coerceAtLeast(1)
+        } catch (e: Exception) {
+            1
+        }
+    }
+}
+
 @Composable
 fun SankalpCardItem(
     sankalp: Sankalp,
@@ -392,50 +406,51 @@ fun SankalpCardItem(
     val textColorPrimary = MaterialTheme.colorScheme.onSurface
     val textColorSecondary = MaterialTheme.colorScheme.onSurfaceVariant
 
-    val primarySaffron = Color(0xFFFF9800)
-    val goldAccent = Color(0xFFFFC107)
+    val primarySaffron = remember { Color(0xFFFF9800) }
+    val goldAccent = remember { Color(0xFFFFC107) }
 
-    val progressPct = if (sankalp.targetMalasTotal > 0) {
-        ((sankalp.completedMalas.toFloat() / sankalp.targetMalasTotal) * 100f).coerceIn(0f, 100f)
-    } else 0f
-
-    // Calculate Days Passed
-    val sdf = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-    val daysPassed = try {
-        val start = sdf.parse(sankalp.startDateString) ?: Date()
-        val diffMillis = System.currentTimeMillis() - start.time
-        ((diffMillis / (1000 * 60 * 60 * 24)) + 1).toInt().coerceAtLeast(1)
-    } catch (e: Exception) {
-        1
+    val progressPct = remember(sankalp.completedMalas, sankalp.targetMalasTotal) {
+        if (sankalp.targetMalasTotal > 0) {
+            ((sankalp.completedMalas.toFloat() / sankalp.targetMalasTotal) * 100f).coerceIn(0f, 100f)
+        } else 0f
     }
 
-    val remainingDays = (sankalp.durationDays - daysPassed).coerceAtLeast(0)
+    // Calculate Days Passed using cached parser
+    val daysPassed = remember(sankalp.startDateString) {
+        SankalpDateUtils.getDaysPassed(sankalp.startDateString)
+    }
 
-    val cardStrings = when (language) {
-        "HINDI" -> SankalpCardStrings(
-            progressLabel = "कुल प्रगति",
-            dayStr = "दिन $daysPassed / ${sankalp.durationDays}",
-            dailyGoalLabel = "दैनिक लक्ष्य",
-            daysLeftStr = "⏳ $remainingDays दिन शेष (समाप्ति: ${sankalp.endDateString})",
-            cancelText = "रद्द करें",
-            chantText = "📿 जाप शुरू करें"
-        )
-        "HINGLISH" -> SankalpCardStrings(
-            progressLabel = "Total Progress",
-            dayStr = "Day $daysPassed of ${sankalp.durationDays}",
-            dailyGoalLabel = "Daily Target",
-            daysLeftStr = "⏳ $remainingDays Days Baki (Target: ${sankalp.endDateString})",
-            cancelText = "Cancel",
-            chantText = "📿 Jaap Shuru Karein"
-        )
-        else -> SankalpCardStrings(
-            progressLabel = "Total Progress",
-            dayStr = "Day $daysPassed of ${sankalp.durationDays}",
-            dailyGoalLabel = "Daily Target",
-            daysLeftStr = "⏳ $remainingDays Days Left (Target: ${sankalp.endDateString})",
-            cancelText = "Cancel",
-            chantText = "📿 Start Jaap"
-        )
+    val remainingDays = remember(sankalp.durationDays, daysPassed) {
+        (sankalp.durationDays - daysPassed).coerceAtLeast(0)
+    }
+
+    val cardStrings = remember(language, daysPassed, remainingDays, sankalp.durationDays, sankalp.endDateString) {
+        when (language) {
+            "HINDI" -> SankalpCardStrings(
+                progressLabel = "कुल प्रगति",
+                dayStr = "दिन $daysPassed / ${sankalp.durationDays}",
+                dailyGoalLabel = "दैनिक लक्ष्य",
+                daysLeftStr = "⏳ $remainingDays दिन शेष (समाप्ति: ${sankalp.endDateString})",
+                cancelText = "रद्द करें",
+                chantText = "📿 जाप शुरू करें"
+            )
+            "HINGLISH" -> SankalpCardStrings(
+                progressLabel = "Total Progress",
+                dayStr = "Day $daysPassed of ${sankalp.durationDays}",
+                dailyGoalLabel = "Daily Target",
+                daysLeftStr = "⏳ $remainingDays Days Baki (Target: ${sankalp.endDateString})",
+                cancelText = "Cancel",
+                chantText = "📿 Jaap Shuru Karein"
+            )
+            else -> SankalpCardStrings(
+                progressLabel = "Total Progress",
+                dayStr = "Day $daysPassed of ${sankalp.durationDays}",
+                dailyGoalLabel = "Daily Target",
+                daysLeftStr = "⏳ $remainingDays Days Left (Target: ${sankalp.endDateString})",
+                cancelText = "Cancel",
+                chantText = "📿 Start Jaap"
+            )
+        }
     }
 
     Card(

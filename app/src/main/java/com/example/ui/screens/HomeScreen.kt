@@ -11,6 +11,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,9 +25,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -68,6 +68,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -212,7 +213,7 @@ fun HomeScreen(
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         // 1. TOP HEADER (Avatar | Good Morning Devotee | Bell)
-        item(key = "header") {
+        item(key = "header", contentType = "header") {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -285,7 +286,7 @@ fun HomeScreen(
         }
 
         // GUEST MODE AWARENESS & DATA PROTECTION REMINDER
-        item(key = "guest_mode_reminder") {
+        item(key = "guest_mode_reminder", contentType = "guest_mode_reminder") {
             AnimatedVisibility(
                 visible = showGuestReminder,
                 enter = fadeIn() + expandVertically(),
@@ -301,7 +302,7 @@ fun HomeScreen(
         }
 
         // 2. MAIN HERO SECTION (Circular Mala Ring + Stats Cards + Start Jaap Button)
-        item(key = "hero_section") {
+        item(key = "hero_section", contentType = "hero_section") {
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -459,7 +460,7 @@ fun HomeScreen(
         }
 
         // 3. TODAY'S PRACTICE & STREAK SUMMARY (Compact Dashboard Section)
-        item(key = "today_practice") {
+        item(key = "today_practice", contentType = "today_practice") {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(20.dp),
@@ -598,7 +599,7 @@ fun HomeScreen(
         }
 
         // 4. QUICK ACTIONS GRID (3 Pill Buttons: Sankalp, Badges, History)
-        item(key = "quick_actions") {
+        item(key = "quick_actions", contentType = "quick_actions") {
             Column {
                 Text(
                     text = "Quick Actions",
@@ -644,7 +645,7 @@ fun HomeScreen(
         }
 
         // 5. TODAY'S MANTRA CARD
-        item(key = "today_mantra") {
+        item(key = "today_mantra", contentType = "today_mantra") {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(20.dp),
@@ -701,7 +702,7 @@ fun HomeScreen(
         }
 
         // 7. SACRED SANKALP SECTION
-        item(key = "sankalp_section") {
+        item(key = "sankalp_section", contentType = "sankalp_section") {
             SankalpTrackerSection(
                 sankalps = allSankalps,
                 allMantras = allMantras,
@@ -720,8 +721,8 @@ fun HomeScreen(
             )
         }
 
-        // 8. MILESTONE BADGES
-        item(key = "milestone_badges") {
+        // 8. MILESTONE BADGES (High Performance Scrollable Row)
+        item(key = "milestone_badges", contentType = "milestone_badges") {
             Column {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -745,11 +746,13 @@ fun HomeScreen(
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                LazyRow(
-                    modifier = Modifier.fillMaxWidth(),
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .horizontalScroll(rememberScrollState()),
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-                    items(milestoneBadgesList, key = { it.id }) { badge ->
+                    milestoneBadgesList.forEach { badge ->
                         val isEarned = totalBeads >= badge.threshold || (badge.id == 1 && currentStreak >= 7)
                         Card(
                             modifier = Modifier
@@ -814,7 +817,7 @@ fun HomeScreen(
         }
 
         // 9. KEEP GOING MOTIVATIONAL BANNER
-        item(key = "motivational_banner") {
+        item(key = "motivational_banner", contentType = "motivational_banner") {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(18.dp),
@@ -853,7 +856,7 @@ fun HomeScreen(
             }
         }
 
-        item(key = "bottom_spacer") {
+        item(key = "bottom_spacer", contentType = "spacer") {
             Spacer(modifier = Modifier.height(10.dp))
         }
     }
@@ -957,7 +960,9 @@ fun MalaBeadRingGraphic(
     modifier: Modifier = Modifier,
     sizeDp: Dp = 145.dp
 ) {
-    val progress = if (dailyGoal > 0) (completedToday.toFloat() / dailyGoal).coerceIn(0f, 1f) else 0f
+    val progress = remember(completedToday, dailyGoal) {
+        if (dailyGoal > 0) (completedToday.toFloat() / dailyGoal).coerceIn(0f, 1f) else 0f
+    }
     val goldColor = remember { Color(0xFFFF9E00) }
     val goldColorAlpha = remember { Color(0xFFFF9E00).copy(alpha = 0.25f) }
     val darkBeadColor = remember { Color(0xFF241C14) }
@@ -969,84 +974,96 @@ fun MalaBeadRingGraphic(
         modifier = modifier.size(sizeDp),
         contentAlignment = Alignment.Center
     ) {
-        Canvas(modifier = Modifier.fillMaxSize()) {
-            val center = Offset(size.width / 2f, size.height / 2f)
-            val radius = (size.width / 2f) - 16.dp.toPx()
-            val totalBeads = 21
-            val beadRadius = 5.5.dp.toPx()
-            val activeBeads = (progress * totalBeads).toInt()
-            val strokeWidth = 1.2.dp.toPx()
+        Spacer(
+            modifier = Modifier
+                .fillMaxSize()
+                .drawWithCache {
+                    val center = Offset(size.width / 2f, size.height / 2f)
+                    val radius = (size.width / 2f) - 16.dp.toPx()
+                    val totalBeads = 21
+                    val beadRadius = 5.5.dp.toPx()
+                    val activeBeads = (progress * totalBeads).toInt()
+                    val strokeWidth = 1.2.dp.toPx()
+                    val stroke = Stroke(width = strokeWidth)
 
-            for (i in 0 until totalBeads) {
-                val (cosA, sinA) = BEAD_ANGLES_21[i]
-                val x = center.x + radius * cosA
-                val y = center.y + radius * sinA
+                    val beadOffsets = Array(totalBeads) { i ->
+                        val (cosA, sinA) = BEAD_ANGLES_21[i]
+                        Offset(center.x + radius * cosA, center.y + radius * sinA)
+                    }
 
-                val isCompleted = i < activeBeads
-                val beadColor = if (isCompleted) goldColor else darkBeadColor
-                val strokeColor = if (isCompleted) strokeGoldColor else strokeDarkColor
+                    val guruX = center.x
+                    val guruY = center.y + radius
+                    val guruCenter = Offset(guruX, guruY)
+                    val guruRadius = 7.dp.toPx()
 
-                if (isCompleted) {
-                    drawCircle(
-                        color = goldColorAlpha,
-                        radius = beadRadius * 1.4f,
-                        center = Offset(x, y)
-                    )
+                    val tasselTopY = guruY + 6.dp.toPx()
+                    val tasselTop = Offset(guruX, tasselTopY)
+                    val tasselEndLeft = Offset(guruX - 5.dp.toPx(), guruY + 16.dp.toPx())
+                    val tasselEndCenter = Offset(guruX, guruY + 18.dp.toPx())
+                    val tasselEndRight = Offset(guruX + 5.dp.toPx(), guruY + 16.dp.toPx())
+                    val tasselStroke = 1.8.dp.toPx()
+
+                    onDrawBehind {
+                        for (i in 0 until totalBeads) {
+                            val beadCenter = beadOffsets[i]
+                            val isCompleted = i < activeBeads
+                            val beadColor = if (isCompleted) goldColor else darkBeadColor
+                            val strokeColor = if (isCompleted) strokeGoldColor else strokeDarkColor
+
+                            if (isCompleted) {
+                                drawCircle(
+                                    color = goldColorAlpha,
+                                    radius = beadRadius * 1.4f,
+                                    center = beadCenter
+                                )
+                            }
+
+                            drawCircle(
+                                color = beadColor,
+                                radius = beadRadius,
+                                center = beadCenter
+                            )
+
+                            drawCircle(
+                                color = strokeColor,
+                                radius = beadRadius,
+                                center = beadCenter,
+                                style = stroke
+                            )
+                        }
+
+                        // Guru bead at bottom
+                        drawCircle(
+                            color = guruColor,
+                            radius = guruRadius,
+                            center = guruCenter
+                        )
+
+                        // Tassel lines
+                        drawLine(
+                            color = goldColor,
+                            start = tasselTop,
+                            end = tasselEndLeft,
+                            strokeWidth = tasselStroke,
+                            cap = StrokeCap.Round
+                        )
+                        drawLine(
+                            color = goldColor,
+                            start = tasselTop,
+                            end = tasselEndCenter,
+                            strokeWidth = tasselStroke,
+                            cap = StrokeCap.Round
+                        )
+                        drawLine(
+                            color = goldColor,
+                            start = tasselTop,
+                            end = tasselEndRight,
+                            strokeWidth = tasselStroke,
+                            cap = StrokeCap.Round
+                        )
+                    }
                 }
-
-                drawCircle(
-                    color = beadColor,
-                    radius = beadRadius,
-                    center = Offset(x, y)
-                )
-
-                drawCircle(
-                    color = strokeColor,
-                    radius = beadRadius,
-                    center = Offset(x, y),
-                    style = Stroke(width = strokeWidth)
-                )
-            }
-
-            // Guru bead at bottom
-            val guruX = center.x
-            val guruY = center.y + radius
-            drawCircle(
-                color = guruColor,
-                radius = 7.dp.toPx(),
-                center = Offset(guruX, guruY)
-            )
-
-            // Tassel lines
-            val tasselTopY = guruY + 6.dp.toPx()
-            val tasselEndLeft = Offset(guruX - 5.dp.toPx(), guruY + 16.dp.toPx())
-            val tasselEndCenter = Offset(guruX, guruY + 18.dp.toPx())
-            val tasselEndRight = Offset(guruX + 5.dp.toPx(), guruY + 16.dp.toPx())
-            val tasselTop = Offset(guruX, tasselTopY)
-            val tasselStroke = 1.8.dp.toPx()
-
-            drawLine(
-                color = goldColor,
-                start = tasselTop,
-                end = tasselEndLeft,
-                strokeWidth = tasselStroke,
-                cap = StrokeCap.Round
-            )
-            drawLine(
-                color = goldColor,
-                start = tasselTop,
-                end = tasselEndCenter,
-                strokeWidth = tasselStroke,
-                cap = StrokeCap.Round
-            )
-            drawLine(
-                color = goldColor,
-                start = tasselTop,
-                end = tasselEndRight,
-                strokeWidth = tasselStroke,
-                cap = StrokeCap.Round
-            )
-        }
+        )
 
         // Center Overlay Text
         Column(
@@ -1085,50 +1102,62 @@ fun KrishnaFluteGraphic(modifier: Modifier = Modifier) {
     val peacockMid = remember { Color(0xFF0072FF) }
     val peacockInner = remember { Color(0xFFFF9E00) }
 
-    Canvas(modifier = modifier) {
-        val w = size.width
-        val h = size.height
+    Spacer(
+        modifier = modifier.drawWithCache {
+            val w = size.width
+            val h = size.height
+            val fluteStroke = 3.5.dp.toPx()
+            val fluteStart = Offset(w * 0.1f, h * 0.7f)
+            val fluteEnd = Offset(w * 0.9f, h * 0.35f)
+            val holeRadius = 2.dp.toPx()
+            val holeOffsets = FLUTE_HOLE_RATIOS.map { ratio ->
+                Offset(w * (0.1f + ratio * 0.8f), h * (0.7f - ratio * 0.35f))
+            }
+            val fx = w * 0.82f
+            val fy = h * 0.28f
+            val featherCenter = Offset(fx, fy)
+            val rOuter = 10.dp.toPx()
+            val rMid = 6.dp.toPx()
+            val rInner = 3.dp.toPx()
 
-        // Flute
-        drawLine(
-            color = fluteColor,
-            start = Offset(w * 0.1f, h * 0.7f),
-            end = Offset(w * 0.9f, h * 0.35f),
-            strokeWidth = 3.5.dp.toPx(),
-            cap = StrokeCap.Round
-        )
+            onDrawBehind {
+                // Flute
+                drawLine(
+                    color = fluteColor,
+                    start = fluteStart,
+                    end = fluteEnd,
+                    strokeWidth = fluteStroke,
+                    cap = StrokeCap.Round
+                )
 
-        // Holes
-        val holeRadius = 2.dp.toPx()
-        for (ratio in FLUTE_HOLE_RATIOS) {
-            val hx = w * (0.1f + ratio * 0.8f)
-            val hy = h * (0.7f - ratio * 0.35f)
-            drawCircle(
-                color = holeColor,
-                radius = holeRadius,
-                center = Offset(hx, hy)
-            )
+                // Holes
+                for (hc in holeOffsets) {
+                    drawCircle(
+                        color = holeColor,
+                        radius = holeRadius,
+                        center = hc
+                    )
+                }
+
+                // Peacock Feather top
+                drawCircle(
+                    color = peacockOuter,
+                    radius = rOuter,
+                    center = featherCenter
+                )
+                drawCircle(
+                    color = peacockMid,
+                    radius = rMid,
+                    center = featherCenter
+                )
+                drawCircle(
+                    color = peacockInner,
+                    radius = rInner,
+                    center = featherCenter
+                )
+            }
         }
-
-        // Peacock Feather top
-        val fx = w * 0.82f
-        val fy = h * 0.28f
-        drawCircle(
-            color = peacockOuter,
-            radius = 10.dp.toPx(),
-            center = Offset(fx, fy)
-        )
-        drawCircle(
-            color = peacockMid,
-            radius = 6.dp.toPx(),
-            center = Offset(fx, fy)
-        )
-        drawCircle(
-            color = peacockInner,
-            radius = 3.dp.toPx(),
-            center = Offset(fx, fy)
-        )
-    }
+    )
 }
 
 fun getTimeBasedGreeting(): String {
