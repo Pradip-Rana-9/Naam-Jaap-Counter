@@ -1,0 +1,16 @@
+{
+  "name": "naam-jaap-counter",
+  "owner": {
+    "name": "Pradip Rana"
+  },
+  "metadata": {
+    "description": "Naam Jaap Counter plugin marketplace"
+  },
+  "plugins": [
+    {
+      "name": "naam-jaap-counter",
+      "description": "Naam Jaap Counter Claude Code plugin",
+      "source": "./"
+    }
+  ]
+}
